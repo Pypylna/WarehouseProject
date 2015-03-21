@@ -1,0 +1,16 @@
+Dodaj nowy sklep do bazy danych<br><br>
+
+{{ form_start(form) }}
+{# wyświetla znacznik <form> z odpowiednio uzupełnionymi danymi #}
+
+{# PROBLEM! To wyrzuca blad #}
+{# {{ form_widget(form.first_field) }} #}
+{# renderuje widget ("surową" część html-ową) naszego formularza, np pole tekstowe #}
+
+{{ form_widget(form) }}
+{# renderuje wszystkie pozostałe pola formularza #}
+
+{{ form_end(form) }}
+{# renderuje wszystkie pozostałe pola formularza oraz zamyka znacznik form otwarty przez funkcję form_start #}
+
+<button type="submit">Dodaj!</button> 
