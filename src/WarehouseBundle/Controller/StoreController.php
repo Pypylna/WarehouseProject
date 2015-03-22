@@ -21,8 +21,9 @@ class StoreController extends Controller
         $store = new Store();
         
         $form=$this->createFormBuilder($store)
-    	->add('name')
-    	->add('localization')
+    	->add('name', 'text')
+    	->add('localization','text')
+        ->add('dodaj','submit')
     	->getForm();
         
         $form->handleRequest($request);
@@ -32,13 +33,16 @@ class StoreController extends Controller
     		$dm->persist($store);
     		$dm->flush();
                 
-                //PROBLEM! Co jest nie tak? Nie dodaje się nic do bazy danych.
-                echo "Dziala!";
-            // return $this->redirectToRoute('gdziestam');
+                return $this->render('store/successNewStore.html.twig');
             }
-		return $this->render('store/newstore.html.twig',
-                        array(
-                            'form'=>$form->createView()
-                        ));
+        else
+        {
+            // PROBLEM! z walidacją
+            dump($form->getErrors());
+        }
+	return $this->render('store/newstore.html.twig',
+                 array(
+                     'form'=>$form->createView()
+                 ));
     }
 }

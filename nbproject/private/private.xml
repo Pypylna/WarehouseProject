@@ -4,8 +4,8 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/wamp/www/WarehouseProject/src/WarehouseBundle/Controller/StoreController.php</file>
-            <file>file:/C:/wamp/www/WarehouseProject/vendor/symfony/symfony/src/Symfony/Component/HttpFoundation/Request.php</file>
             <file>file:/C:/wamp/www/WarehouseProject/src/WarehouseBundle/Entity/Store.php</file>
+            <file>file:/C:/wamp/www/WarehouseProject/vendor/symfony/symfony/src/Symfony/Component/Form/FormBuilder.php</file>
             <file>file:/C:/wamp/www/WarehouseProject/app/Resources/views/store/newStore.html.twig</file>
         </group>
     </open-files>

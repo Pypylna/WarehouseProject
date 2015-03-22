@@ -26,23 +26,27 @@ class __TwigTemplate_e6f04ee613b7e5668636788a16905519baf62dd8d07e11b92d72821dcf4
         // line 5
         echo "
 ";
-        // line 9
+        // line 6
+        echo $this->env->getExtension('form')->renderer->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "name", array()), 'row');
         echo "
 ";
-        // line 10
-        echo $this->env->getExtension('form')->renderer->searchAndRenderBlock((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), 'widget');
+        // line 7
+        echo $this->env->getExtension('form')->renderer->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "localization", array()), 'row');
         echo "
 ";
-        // line 12
+        // line 8
+        echo $this->env->getExtension('form')->renderer->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "dodaj", array()), 'row');
         echo "
+
+
 ";
-        // line 13
+        // line 11
         echo         $this->env->getExtension('form')->renderer->renderBlock((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), 'form_end');
         echo "
 ";
-        // line 15
+        // line 13
         echo "
-<button type=\"submit\">Dodaj!</button> ";
+";
     }
 
     public function getTemplateName()
@@ -57,6 +61,6 @@ class __TwigTemplate_e6f04ee613b7e5668636788a16905519baf62dd8d07e11b92d72821dcf4
 
     public function getDebugInfo()
     {
-        return array (  44 => 15,  40 => 13,  37 => 12,  33 => 10,  30 => 9,  27 => 5,  23 => 3,  19 => 1,);
+        return array (  48 => 13,  44 => 11,  38 => 8,  34 => 7,  30 => 6,  27 => 5,  23 => 3,  19 => 1,);
     }
 }
