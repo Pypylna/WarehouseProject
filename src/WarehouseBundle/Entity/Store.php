@@ -24,6 +24,7 @@ class Store
 
     /**
      * @var string
+     * #error brak przecinka po "minMessage"
      *
      * @ORM\Column(name="name", type="string", length=128)
      * @Assert\Length(
@@ -37,6 +38,7 @@ class Store
 
     /**
      * @var string
+     * #error brak przecinka po "minMessage"
      *
      * @ORM\Column(name="localization", type="string", length=500)
      * @Assert\Length(
@@ -52,7 +54,7 @@ class Store
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -75,7 +77,7 @@ class Store
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -98,7 +100,7 @@ class Store
     /**
      * Get localization
      *
-     * @return string 
+     * @return string
      */
     public function getLocalization()
     {
