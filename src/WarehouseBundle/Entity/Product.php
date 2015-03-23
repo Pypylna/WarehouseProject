@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity
  */
-class Product       //NIEGOTOWE
+class Product
 {
     /**
      * @var integer
@@ -22,16 +22,12 @@ class Product       //NIEGOTOWE
     private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="metaProduct", type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="MetaProduct")
      */
     private $metaProduct;
 
     /**
-     * @var \stdClass
-     *
-     * @ORM\Column(name="store", type="object")
+     * @ORM\ManyToOne(targetEntity="Store")
      */
     private $store;
 

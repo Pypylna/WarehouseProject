@@ -47,6 +47,12 @@ class Store
      */
     private $localization;
 
+	
+	/**
+	 * @ORM\ManyToOne(targetEntity="Store", inversedBy="stores")
+	 */
+	private $group;
+	
 
     /**
      * Get id
@@ -103,4 +109,9 @@ class Store
     {
         return $this->localization;
     }
+	
+	public function getGroup()
+	{
+		return $this->group;
+	}
 }

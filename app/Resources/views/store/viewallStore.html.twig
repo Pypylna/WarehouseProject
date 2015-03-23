@@ -1,0 +1,17 @@
+Sklepy w naszej bazie:<br><br>
+
+{% for group in storegroups %}
+    
+    Nazwa sieci: {{ group.name }} <br>
+    <ol>
+    {% for store in group.stores %}
+        <li>
+            Nazwa: {{store.name}}<br>
+            Adres: {{store.localization}}
+        </li>
+  
+    {% endfor %}
+    </ol>
+    
+    
+{% endfor %}

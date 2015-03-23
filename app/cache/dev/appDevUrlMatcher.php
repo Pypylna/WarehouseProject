@@ -132,9 +132,37 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
             return $this->mergeDefaults(array_replace($matches, array('_route' => 'warehouse_default_index')), array (  '_controller' => 'WarehouseBundle\\Controller\\DefaultController::indexAction',));
         }
 
-        // warehouse_store_new
-        if ($pathinfo === '/store/new') {
-            return array (  '_controller' => 'WarehouseBundle\\Controller\\StoreController::newAction',  '_route' => 'warehouse_store_new',);
+        // warehouse_metaproduct_new
+        if ($pathinfo === '/metaProduct/new') {
+            return array (  '_controller' => 'WarehouseBundle\\Controller\\MetaProductController::newAction',  '_route' => 'warehouse_metaproduct_new',);
+        }
+
+        // warehouse_product_new
+        if ($pathinfo === '/product/new') {
+            return array (  '_controller' => 'WarehouseBundle\\Controller\\ProductController::newAction',  '_route' => 'warehouse_product_new',);
+        }
+
+        if (0 === strpos($pathinfo, '/store')) {
+            // warehouse_store_index
+            if ($pathinfo === '/store') {
+                return array (  '_controller' => 'WarehouseBundle\\Controller\\StoreController::indexAction',  '_route' => 'warehouse_store_index',);
+            }
+
+            // warehouse_store_viewall
+            if ($pathinfo === '/store/viewall') {
+                return array (  '_controller' => 'WarehouseBundle\\Controller\\StoreController::viewallAction',  '_route' => 'warehouse_store_viewall',);
+            }
+
+            // warehouse_store_new
+            if ($pathinfo === '/store/new') {
+                return array (  '_controller' => 'WarehouseBundle\\Controller\\StoreController::newAction',  '_route' => 'warehouse_store_new',);
+            }
+
+        }
+
+        // warehouse_user_choosegroup
+        if ($pathinfo === '/user') {
+            return array (  '_controller' => 'WarehouseBundle\\Controller\\UserController::chooseGroupAction',  '_route' => 'warehouse_user_choosegroup',);
         }
 
         // homepage
