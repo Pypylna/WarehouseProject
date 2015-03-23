@@ -62,3 +62,5 @@ e49bf9,127.0.0.1,GET,http://localhost/WarehouseProject/web/app_dev.php/store/new
 798424,127.0.0.1,GET,http://localhost/WarehouseProject/web/app_dev.php/store/new,1427060942,
 c3c049,127.0.0.1,GET,http://localhost/WarehouseProject/web/app_dev.php/store/new,1427060962,789182
 789182,127.0.0.1,POST,http://localhost/WarehouseProject/web/app_dev.php/store/new,1427060962,
+a67ec5,127.0.0.1,GET,http://localhost/WarehouseProject/web/app_dev.php/store/new,1427066353,
+2e498c,127.0.0.1,POST,http://localhost/WarehouseProject/web/app_dev.php/store/new,1427066427,

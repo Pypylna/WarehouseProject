@@ -24,12 +24,11 @@ class Store
 
     /**
      * @var string
-     * #error brak przecinka po "minMessage"
      *
      * @ORM\Column(name="name", type="string", length=128)
      * @Assert\Length(
      *     min=3,
-     *     minMessage="Nazwa sklepu jest zbyt krótka"
+     *     minMessage="Nazwa sklepu jest zbyt krótka",
      *     max=128,
      *     maxMessage="Nazwa sklepu nie może być dłuższa niż 128 liter"
      *     )
@@ -38,12 +37,10 @@ class Store
 
     /**
      * @var string
-     * #error brak przecinka po "minMessage"
-     *
      * @ORM\Column(name="localization", type="string", length=500)
      * @Assert\Length(
      *     min=7,
-     *     minMessage="Adres jest zbyt krótki"
+     *     minMessage="Adres jest zbyt krótki",
      *     max=500,
      *     maxMessage="Adres nie może być dłuższy niż 500 liter"
      *     )

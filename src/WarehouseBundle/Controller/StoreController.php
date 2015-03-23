@@ -13,7 +13,6 @@ class StoreController extends Controller
 {
     //DODAC indexAction
     /**
-     * #fixme ustawienia tworzenia kodu: nie używać tabów - używać 4 spacji
      *
      * @Route("/store/new")
      */
@@ -24,8 +23,7 @@ class StoreController extends Controller
 
         $form=$this->createFormBuilder($store)
         ->add('name', 'text')
-        ->add('localization','text')
-        ->add('dodaj','submit') // #fixme submity wsadzamy do widoku (twig)
+        ->add('localization','text')// #dlaczego submit do widoku?
         ->getForm();
 
         $form->handleRequest($request);
@@ -35,11 +33,6 @@ class StoreController extends Controller
             $dm->persist($store);
             $dm->flush();
 
-                // #fixme taki widok nie istnieje
-                // jeszcze nie był Ci potrzebny lub go nie dodałaś do commita
-                //      $ git add --all
-                // lub
-                //      $ git add .
                 return $this->render('store/successNewStore.html.twig');
             }
         else
@@ -48,11 +41,8 @@ class StoreController extends Controller
             dump($form->getErrors());
         }
 
-    // #fixme: na windowsie działa, na unixowych systemach nie.
-    // Różnica: wielkość literki 'S'
-    // Smaczek systemowy, o którym trzeba pamiętać:
-    //                          zawsze pilnujemy wielkości liter
-    return $this->render('store/newstore.html.twig',
+    // #dobrepraktyki - pilnujemy wielkości literek
+    return $this->render('store/newStore.html.twig',
                  array(
                      'form'=>$form->createView()
                  ));

@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity
  */
-class Category      //NIEGOTOWE
+class Category
 {
     /**
      * @var integer
@@ -29,20 +29,22 @@ class Category      //NIEGOTOWE
     private $name;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="parent", type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="children")
      */
     private $parent;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="children", type="string", length=255)
+     * @ORM\OneToMany(targetEntity="Category", mappedBy="parent")
      */
     private $children;
 
 
+	public function __construct()
+	{
+        $this->children = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+	
+	
     /**
      * Get id
      *
