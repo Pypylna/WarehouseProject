@@ -52,7 +52,7 @@ class StoreController extends Controller
     // Różnica: wielkość literki 'S'
     // Smaczek systemowy, o którym trzeba pamiętać:
     //                          zawsze pilnujemy wielkości liter
-    return $this->render('store/newstore.html.twig',
+    return $this->render('store/newStore.html.twig',
                  array(
                      'form'=>$form->createView()
                  ));
