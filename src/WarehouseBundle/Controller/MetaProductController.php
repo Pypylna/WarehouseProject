@@ -33,7 +33,7 @@ class MetaProductController extends Controller
 		))
 		->add('keywords','text')
 		->getForm();
-		
+
 
         $form->handleRequest($request);
         if($form->isValid())

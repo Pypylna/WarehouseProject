@@ -13,8 +13,8 @@ class StoreController extends Controller
 {
     #todo editAction
 	#todo deleteAction
-	
-	
+
+
 	/**
 	 * @Route("/store")
 	 */
@@ -31,7 +31,7 @@ class StoreController extends Controller
 	public function viewallAction()
 	{
 		$storegroups = $this->getDoctrine()->getRepository('WarehouseBundle:StoreGroup')->findAll();
-		
+
 		return $this->render('store/viewallStore.html.twig',array(
 			'storegroups' => $storegroups,
 		));
@@ -58,7 +58,18 @@ class StoreController extends Controller
 		))
         ->getForm();
 
-		
+		#info -> submit do widoku, bo:
+        # 1. jest w nim definowany używany znacznik (<submit>),
+        #       a decyzja czy go użyć, czy nie leży w gestii frontendowców.
+        #       Gdyby postanowili użyć innego znacznika w jego miejsce
+        #       (np <input>) albo nie chcieli go użüwać wcale (javascript)
+        #       musieliby odnaleźć to miejsce w kodzie,
+        #       gdzie został on dodany do formularza lub w brzydki sposób
+        #       go ukryć za pomocą css-ów, co mogłoby się odbić
+        #       np na pozycjonowaniu strony
+        # 2. celem backendowców jest stworzyć część serwerową,
+        #       która będzie możliwie kuloodporna. Brzmi skromnie, ale to nawał
+        #       pracy.
 
         $form->handleRequest($request);
         if($form->isValid())
@@ -69,7 +80,6 @@ class StoreController extends Controller
 
                 return $this->render('store/successNewStore.html.twig');
         }
-
 
     // #dobrepraktyki - pilnujemy wielkości literek
     return $this->render('store/newStore.html.twig',

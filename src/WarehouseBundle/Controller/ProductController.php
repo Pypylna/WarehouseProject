@@ -33,9 +33,11 @@ class ProductController extends Controller
 		))
 		->add('expireAt','date')
 				#todo - domyślna data
+                #info - wsadzenie "na start" daty do odpowiedniej
+                #       własności w klasie powinno załatwić sprawę (strzelam)
 		->add('amount','text')
 		->getForm();
-		
+
 
         $form->handleRequest($request);
         if($form->isValid())
