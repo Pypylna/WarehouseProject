@@ -15,40 +15,38 @@ class UserController extends Controller
 	/**
 	 * @Route("/user")
 	 */
-	public function chooseGroupAction(Request $request)
-	#PROBLEM - Nieudana próba.
-	/*
-	 * Chciałam, żeby user miał możliwość wybrania własnego StoreGroup,
-	 * następnie dostępnego Store i później z tymi danymi działać dalej.
-	 * Najlepiej żeby ten wybór był w jednym widoku - jak to zrobić?
-	 */
-	
-			
+	public function chooseGroupAction(Request $request)		
 	{
-		$T = array(
-			'group' => new StoreGroup(),
-		);
-		
-		$form1 = $this->createFormBuilder($T)
+		$form1 = $this->createFormBuilder()
 			->add('group','entity', array(
 				'class' => 'WarehouseBundle:StoreGroup',
 				'property' => 'name'
 			))
 			->getForm();
 		
-		
 		$form1->handleRequest($request);
 		
-		if($form1->isValid()) #potrzebna inna funkcja?
+		if($form1->isValid()) #potrzebna inna funkcja? isClicked?
 		{
-			$T['store'] = new Store();
+			$group = $form1->getData();
+	//		var_dump($group);
 			
-			$form2 = $this->createFormBuilder($T)
+			$store = new Store();
+			$form2 = $this->createFormBuilder()
 				->add('store','entity',array(
 					'class' => 'WarehouseBundle:Store',
-					'property' => 'name'
+					'property' => 'name',
+					'choices' => $group->stores #PROBLEM
+//					'query_builder' => function(\Doctrine\ORM\EntityRepository $er)
+//						{
+//							return $er->createQueryBuilder('st')
+//								->leftJoin('st.group', 'group')
+//								->where('group =: gr')
+//								->setParameter('gr', $group)
+//							;
+//						},
 				))
-					->getForm();
+				->getForm();
 			
 			return $this->render('user/choose2.html.twig', array(
 				'form' => $form2->createView()
