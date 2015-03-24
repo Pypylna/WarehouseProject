@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity
  */
-class MetaProduct       //NIEGOTOWE
+class MetaProduct
 {
     /**
      * @var integer
@@ -43,11 +43,9 @@ class MetaProduct       //NIEGOTOWE
     private $price;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="cetegory", type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="Category")
      */
-    private $cetegory;
+    private $category;
 
     /**
      * @var string
@@ -56,12 +54,6 @@ class MetaProduct       //NIEGOTOWE
      */
     private $keywords;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="store", type="string", length=255)
-     */
-    private $store;
 
 
     /**
@@ -144,26 +136,24 @@ class MetaProduct       //NIEGOTOWE
     }
 
     /**
-     * Set cetegory
+     * Set category
      *
-     * @param string $cetegory
+     * @param string $ategory
      * @return MetaProduct
      */
-    public function setCetegory($cetegory)
+    public function setCategory($category)
     {
-        $this->cetegory = $cetegory;
+        $this->category = $category;
 
         return $this;
     }
 
     /**
-     * Get cetegory
-     *
-     * @return string 
+     * Get category
      */
-    public function getCetegory()
+    public function getCategory()
     {
-        return $this->cetegory;
+        return $this->category;
     }
 
     /**

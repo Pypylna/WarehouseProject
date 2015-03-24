@@ -24,7 +24,6 @@ class Store
 
     /**
      * @var string
-     * #error brak przecinka po "minMessage"
      *
      * @ORM\Column(name="name", type="string", length=128)
      * @Assert\Length(
@@ -38,8 +37,6 @@ class Store
 
     /**
      * @var string
-     * #error brak przecinka po "minMessage"
-     *
      * @ORM\Column(name="localization", type="string", length=500)
      * @Assert\Length(
      *     min=7,
@@ -50,6 +47,12 @@ class Store
      */
     private $localization;
 
+	
+	/**
+	 * @ORM\ManyToOne(targetEntity="Store", inversedBy="stores")
+	 */
+	private $group;
+	
 
     /**
      * Get id
@@ -106,4 +109,9 @@ class Store
     {
         return $this->localization;
     }
+	
+	public function getGroup()
+	{
+		return $this->group;
+	}
 }

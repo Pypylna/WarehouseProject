@@ -5,12 +5,12 @@ namespace WarehouseBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Category
+ * StoreGroup
  *
  * @ORM\Table()
  * @ORM\Entity
  */
-class Category
+class StoreGroup
 {
     /**
      * @var integer
@@ -29,21 +29,16 @@ class Category
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Category", inversedBy="children")
+     * @ORM\OneToMany(targetEntity="Store", mappedBy="group")
      */
-    private $parent;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Category", mappedBy="parent")
-     */
-    private $children;
+    private $stores;
 
 
+	
 	public function __construct()
 	{
-        $this->children = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-	
+		$this->stores = new \Doctrine\Common\Collections\ArrayCollection();
+	}
 	
     /**
      * Get id
@@ -59,7 +54,7 @@ class Category
      * Set name
      *
      * @param string $name
-     * @return Category
+     * @return StoreGroup
      */
     public function setName($name)
     {
@@ -79,48 +74,27 @@ class Category
     }
 
     /**
-     * Set parent
+     * Set stores
      *
-     * @param string $parent
-     * @return Category
+     * @param \stdClass $stores
+     * @return StoreGroup
      */
-    public function setParent($parent)
+    public function setStores($stores)
     {
-        $this->parent = $parent;
+        $this->stores = $stores;
 
         return $this;
     }
 
     /**
-     * Get parent
+     * Get stores
      *
-     * @return string 
+     * @return \stdClass 
      */
-    public function getParent()
+    public function getStores()
     {
-        return $this->parent;
+        return $this->stores;
     }
+	
 
-    /**
-     * Set children
-     *
-     * @param string $children
-     * @return Category
-     */
-    public function setChildren($children)
-    {
-        $this->children = $children;
-
-        return $this;
-    }
-
-    /**
-     * Get children
-     *
-     * @return string 
-     */
-    public function getChildren()
-    {
-        return $this->children;
-    }
 }

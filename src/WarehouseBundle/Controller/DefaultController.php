@@ -9,6 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class DefaultController extends Controller
 {
     /**
+     * #fixme - nie używany, nie ma kodu "na potem", więc do wywalenia
+     *
      * @Route("/hello/{name}")
      * @Template()
      */
