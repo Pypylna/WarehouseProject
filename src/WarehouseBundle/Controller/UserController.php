@@ -12,9 +12,9 @@ use Symfony\Component\HttpFoundation\Request;
 class UserController extends Controller
 {
 	/**
-	 * @Route("/user")
+	 * @Route("/user", name="/user")
 	 */
-	public function chooseGroupAction(Request $request, Request $request2)
+	public function chooseStoreGroupAction(Request $request)
 	{
 		$form1 = $this->createFormBuilder()
 			->add('group','entity', array(
@@ -44,46 +44,52 @@ class UserController extends Controller
 						->findByGroup($group['group']);
 			}
 			
-			
-			$form2 = $this->createFormBuilder()
-					->add('store','entity', array(
-						'class' => 'WarehouseBundle:Store',
-						'property' => 'name',
-						'choices' => $stores
-					))
-					->getForm();
-
-			#PROBLEM - W ogóle nie wchodzi mi do pętli niżej. Dlaczego?
-			#Pytanie:
-			#zagnieżdżone ify, 3 returny... Czy nie powinnam jakoś inaczej,
-			#lepiej zorganizować tę metodę? Wrzucić jakoś część do modelu?
-			
-			$form2->handleRequest($request);
-			if($form2->isValid())
-			{
-				$store = $form2->getData();
-				
-				var_dump($group);
-				var_dump($store);
-				
-				#todo
-				#błędne array + obsluga pustej grupy
-				return  $this->redirectToRoute('userControl', array(
-					'group' => $group,
-					'store' => $store
-				));
-			}
-			
-			return $this->render('user/choose2.html.twig', array(
-				'form' => $form2->createView()
-			));
+			return $this->forward('WarehouseBundle:User:chooseGroup', array(
+					'stores' => $stores,
+					));
 		}
-
+			
 		return $this->render('user/choose1.html.twig', array(
 			'form' => $form1->createView()
-		));
+			));
 	}
 
+	
+	public function chooseGroupAction(Request $request,$stores)
+	{
+		$form2 = $this->createFormBuilder()
+		->add('store','entity', array(
+			'class' => 'WarehouseBundle:Store',
+			'property' => 'name',
+			'choices' => $stores
+			))
+		->getForm();
+		
+		$form2->handleRequest($request);
+		
+		#PROBLEM dalej nie chce mi wejść do tej pętli...
+		if($form2->isValid())
+		{
+			$store = $form2->getData();
+
+			var_dump($store);
+
+			#todo
+			#błędne array + obsluga pustej grupy
+			return  $this->redirectToRoute('userControl', array(
+				'group' => $group,
+				'store' => $store
+				));
+		}
+		
+					
+		return $this->render('user/choose2.html.twig', array(
+			'form' => $form2->createView()
+			));
+	}
+	
+	
+	
 	
 	/**
 	 * @Route("/user/{groupId}/{storeId}", name="userControl")
@@ -106,7 +112,6 @@ class UserController extends Controller
 	 */
 	public function showStoreProductsAction($groupId, $storeId)
 	{
-		#todo - sortowanie
 		#todo? - wyświetlanie po kategoriach
 		$dm = $this->getDoctrine()->getManager();
 		
@@ -134,8 +139,33 @@ class UserController extends Controller
 	 */
 	public function showGroupProductsAction($groupId, $storeId)
 	{
-		#todo
-		echo "showGroupProductsAction";
+		$products1 = $this->getDoctrine()->getManager()
+				->getRepository('WarehouseBundle:Product')
+				->createQueryBuilder('p')
+				->leftJoin('p.store', 's')
+				->where('s.id = :sid')
+				->setParameter('sid', $storeId)
+				->getQuery()
+				->getResult();
+		
+		$products2 = $this->getDoctrine()->getManager()
+				->getRepository('WarehouseBundle:Product')
+				->createQueryBuilder('p')
+				->leftJoin('p.group', 'g')
+				->where('g.id = :gid')
+				->setParameter('gid', $groupId)
+				->leftJoin('g.store','s')
+				->where('s.id != :sid')
+				->setParameter('sid', $storeId)
+				->getQuery()
+				->getResult();
+		
+		
+		return $this->render('user/viewGroupProducts.html.twig',array(
+			'products1'=>$products1,
+			'products2'=>$products2
+		)
+		);
 	}
 	
 	

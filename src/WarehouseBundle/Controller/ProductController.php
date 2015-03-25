@@ -7,11 +7,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use WarehouseBundle\Entity\Product;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Constraints\Range;
 
 
 class ProductController extends Controller
 {
-    //todo indexAction
+
     /**
      *
      * @Route("/product/new")
@@ -58,5 +59,52 @@ class ProductController extends Controller
                      'form'=>$form->createView()
                  ));
     }
+	
+	/**
+	 * @Route("/product/reduce/{id}", name="/product/reduce")
+	 */
+	public function reduceAmountAction(Request $request, $id)
+	{
+		
+		$product = $this->getDoctrine()
+				->getRepository('WarehouseBundle:Product')
+				->findOneById($id);
+		
+		
+		$form = $this->createFormBuilder()
+				->add('ilosc','text',array(
+					'label' => 'Zmniejsz o:',
+					'constraints' => array(
+						new Range(array(
+							'max' => $product->getAmount(),
+							'maxMessage' => "Mniej niż {{limit}}",
+						))
+					)
+				))
+				->getForm();
+		
+		#PROBLEM - Kolejny if, do którego nie chce mi wejść...
+		#Na pewno właściwe constraints u góry?
+		if($form->isValid())
+		{
+			var_dump($form->getData());
+			
+			//$product->setAmount( $product->getAmount() -  )
+			
+			$dm=$this->getDoctrine()
+					->getManager()
+					->persist($product)
+					->flush();
+				#todo - odpowiedni widok
+                return $this->render('store/successNewStore.html.twig');
+          
+		}
+		
+		
+		return $this->render('product/reduceAmount.html.twig', array(
+			'form' => $form->createView(),
+			'limit' => $product->getAmount(),
+			));
+	}
 
 }

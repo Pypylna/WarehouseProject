@@ -132,9 +132,17 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
             return array (  '_controller' => 'WarehouseBundle\\Controller\\MetaProductController::newAction',  '_route' => 'warehouse_metaproduct_new',);
         }
 
-        // warehouse_product_new
-        if ($pathinfo === '/product/new') {
-            return array (  '_controller' => 'WarehouseBundle\\Controller\\ProductController::newAction',  '_route' => 'warehouse_product_new',);
+        if (0 === strpos($pathinfo, '/product')) {
+            // warehouse_product_new
+            if ($pathinfo === '/product/new') {
+                return array (  '_controller' => 'WarehouseBundle\\Controller\\ProductController::newAction',  '_route' => 'warehouse_product_new',);
+            }
+
+            // /product/reduce
+            if (0 === strpos($pathinfo, '/product/reduce') && preg_match('#^/product/reduce/(?P<id>[^/]++)$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => '/product/reduce')), array (  '_controller' => 'WarehouseBundle\\Controller\\ProductController::reduceAmountAction',));
+            }
+
         }
 
         if (0 === strpos($pathinfo, '/store')) {
@@ -174,9 +182,9 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
         }
 
         if (0 === strpos($pathinfo, '/user')) {
-            // warehouse_user_choosegroup
+            // /user
             if ($pathinfo === '/user') {
-                return array (  '_controller' => 'WarehouseBundle\\Controller\\UserController::chooseGroupAction',  '_route' => 'warehouse_user_choosegroup',);
+                return array (  '_controller' => 'WarehouseBundle\\Controller\\UserController::chooseStoreGroupAction',  '_route' => '/user',);
             }
 
             // userControl

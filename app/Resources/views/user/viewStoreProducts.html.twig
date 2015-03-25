@@ -1,6 +1,12 @@
 
-Produkty w Twoim sklepie:<br><br>
+<h2>Produkty w Twoim sklepie:</h2>
 
+{#todo uwaga!- błędne path#}
+<a href={{ path('/user') }}><button >Pokaż wg<br>daty ważności</button></a>
+<a href={{ path('/user') }}><button >Pokaż wg<br>kategorii</button></a><br>
+
+
+Wszystkie produkty: <br>
 <ol>
 {% for product in products %}
     <li>
@@ -10,21 +16,18 @@ Produkty w Twoim sklepie:<br><br>
         Ilość: {{ product.amount }}<br>
         Kategoria:<br>
         <ul>
-            {#PROBLEM! Chciałam wyświetlić drzewko kategorii
-            (najlepiej jeszcze w odwrotnej kolejności),
-            ale twig nie chce ze mną współpracować w ten sposób.
-            Jak to zrobić poprawnie?#}
+            {#PROBLEM! Nie rzuca błędem, ale nie wyświetla kategorii#}
             
-            {% categories = product.metaProduct.category %}
-            {% for category in categories if category %} {#if, żeby obsłużyć nulla. Jest w ogóle potrzebny?#}
+            {% for category in product.metaProduct.category %}
                 <li>
-                    {{product.metaProduct.category.name}}                    
+                    {% include "store/includes/category.html.twig" with {'category':category} %}         
                 </li>
-            {% categories = category->parent %}
             {% endfor %}
         </ul>
             
-        Data ważności: {{ product.expireAt|date('Y-m-d') }}
+        Data ważności: {{ product.expireAt|date('Y-m-d') }}<br>
+        {#todo#}
+        <a href={{ path('/product/reduce', {'id':product.id}) }}><button>Zmniejsz ilość</button></a>
     </li>
     
 {% endfor %}

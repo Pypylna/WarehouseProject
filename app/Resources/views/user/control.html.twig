@@ -1,4 +1,7 @@
 <h2>Co chcesz teraz zrobić?</h2>
 
-<a href={{ path('/user/storeProducts', {'groupId': group, 'storeId': store}) }}>Pokaż produkty w Twoim sklepie</a><br>
-<a href={{ path('/user/groupProducts', {'groupId': group, 'storeId': store}) }}>Pokaż produkty w Twojej grupie</a><br>
+<a href={{ path('/user/storeProducts', {'groupId': group, 'storeId': store}) }}>Pokaż produkty w moim sklepie</a><br>
+
+{#todo - +błedne path!#}
+<a href={{ path('/user/groupProducts', {'groupId': group, 'storeId': store}) }}>Pokaż produkty w mojej grupie</a><br>
+<a href={{ path('/user/groupProducts', {'groupId': group, 'storeId': store}) }}>Wprowadź dostawę</a><br>

@@ -3,17 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/wamp/www/WarehouseProject/src/WarehouseBundle/Entity/StoreGroup.php</file>
-            <file>file:/C:/wamp/www/WarehouseProject/app/Resources/views/store/viewallStore.html.twig</file>
-            <file>file:/C:/wamp/www/WarehouseProject/src/WarehouseBundle/Controller/StoreController.php</file>
-            <file>file:/C:/wamp/www/WarehouseProject/src/WarehouseBundle/Controller/StoreGroupController.php</file>
-            <file>file:/C:/wamp/www/WarehouseProject/src/WarehouseBundle/Entity/Category.php</file>
-            <file>file:/C:/wamp/www/WarehouseProject/src/WarehouseBundle/Entity/Store.php</file>
-            <file>file:/C:/wamp/www/WarehouseProject/src/WarehouseBundle/Entity/MetaProduct.php</file>
-            <file>file:/C:/wamp/www/WarehouseProject/src/WarehouseBundle/Entity/Product.php</file>
-            <file>file:/C:/wamp/www/WarehouseProject/app/Resources/views/group/newGroup.html.twig</file>
-            <file>file:/C:/wamp/www/WarehouseProject/app/Resources/views/store/newStore.html.twig</file>
-            <file>file:/C:/wamp/www/WarehouseProject/src/WarehouseBundle/Controller/ProductController.php</file>
+            <file>file:/C:/wamp/www/WarehouseProject/README.md</file>
+            <file>file:/C:/wamp/www/WarehouseProject/src/WarehouseBundle/Controller/UserController.php</file>
+            <file>file:/C:/wamp/www/WarehouseProject/app/Resources/views/user/viewStoreProducts.html.twig</file>
         </group>
     </open-files>
 </project-private>
