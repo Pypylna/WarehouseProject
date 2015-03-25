@@ -127,11 +127,6 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
 
         }
 
-        // warehouse_default_index
-        if (0 === strpos($pathinfo, '/hello') && preg_match('#^/hello/(?P<name>[^/]++)$#s', $pathinfo, $matches)) {
-            return $this->mergeDefaults(array_replace($matches, array('_route' => 'warehouse_default_index')), array (  '_controller' => 'WarehouseBundle\\Controller\\DefaultController::indexAction',));
-        }
-
         // warehouse_metaproduct_new
         if ($pathinfo === '/metaProduct/new') {
             return array (  '_controller' => 'WarehouseBundle\\Controller\\MetaProductController::newAction',  '_route' => 'warehouse_metaproduct_new',);
@@ -148,21 +143,57 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                 return array (  '_controller' => 'WarehouseBundle\\Controller\\StoreController::indexAction',  '_route' => 'warehouse_store_index',);
             }
 
-            // warehouse_store_viewall
+            // /store/viewall
             if ($pathinfo === '/store/viewall') {
-                return array (  '_controller' => 'WarehouseBundle\\Controller\\StoreController::viewallAction',  '_route' => 'warehouse_store_viewall',);
+                return array (  '_controller' => 'WarehouseBundle\\Controller\\StoreController::viewallAction',  '_route' => '/store/viewall',);
             }
 
-            // warehouse_store_new
+            // /store/new
             if ($pathinfo === '/store/new') {
-                return array (  '_controller' => 'WarehouseBundle\\Controller\\StoreController::newAction',  '_route' => 'warehouse_store_new',);
+                return array (  '_controller' => 'WarehouseBundle\\Controller\\StoreController::newAction',  '_route' => '/store/new',);
             }
 
         }
 
-        // warehouse_user_choosegroup
-        if ($pathinfo === '/user') {
-            return array (  '_controller' => 'WarehouseBundle\\Controller\\UserController::chooseGroupAction',  '_route' => 'warehouse_user_choosegroup',);
+        if (0 === strpos($pathinfo, '/group')) {
+            // warehouse_storegroup_index
+            if ($pathinfo === '/group') {
+                return array (  '_controller' => 'WarehouseBundle\\Controller\\StoreGroupController::indexAction',  '_route' => 'warehouse_storegroup_index',);
+            }
+
+            // /group/viewall
+            if ($pathinfo === '/group/viewall') {
+                return array (  '_controller' => 'WarehouseBundle\\Controller\\StoreGroupController::viewallAction',  '_route' => '/group/viewall',);
+            }
+
+            // /group/new
+            if ($pathinfo === '/group/new') {
+                return array (  '_controller' => 'WarehouseBundle\\Controller\\StoreGroupController::newAction',  '_route' => '/group/new',);
+            }
+
+        }
+
+        if (0 === strpos($pathinfo, '/user')) {
+            // warehouse_user_choosegroup
+            if ($pathinfo === '/user') {
+                return array (  '_controller' => 'WarehouseBundle\\Controller\\UserController::chooseGroupAction',  '_route' => 'warehouse_user_choosegroup',);
+            }
+
+            // userControl
+            if (preg_match('#^/user/(?P<groupId>[^/]++)/(?P<storeId>[^/]++)$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'userControl')), array (  '_controller' => 'WarehouseBundle\\Controller\\UserController::userControlAction',));
+            }
+
+            // /user/storeProducts
+            if (preg_match('#^/user/(?P<groupId>[^/]++)/(?P<storeId>[^/]++)/store$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => '/user/storeProducts')), array (  '_controller' => 'WarehouseBundle\\Controller\\UserController::showStoreProductsAction',));
+            }
+
+            // /user/groupProducts
+            if (preg_match('#^/user/(?P<groupId>[^/]++)/(?P<storeId>[^/]++)/group$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => '/user/groupProducts')), array (  '_controller' => 'WarehouseBundle\\Controller\\UserController::showGroupProductsAction',));
+            }
+
         }
 
         // homepage

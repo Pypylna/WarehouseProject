@@ -1,0 +1,31 @@
+
+Produkty w Twoim sklepie:<br><br>
+
+<ol>
+{% for product in products %}
+    <li>
+        {#todo#}
+        Nazwa: {{ product.metaProduct.name }} <br>
+        Cena: {{ product.metaProduct.price }}<br>
+        Ilość: {{ product.amount }}<br>
+        Kategoria:<br>
+        <ul>
+            {#PROBLEM! Chciałam wyświetlić drzewko kategorii
+            (najlepiej jeszcze w odwrotnej kolejności),
+            ale twig nie chce ze mną współpracować w ten sposób.
+            Jak to zrobić poprawnie?#}
+            
+            {% categories = product.metaProduct.category %}
+            {% for category in categories if category %} {#if, żeby obsłużyć nulla. Jest w ogóle potrzebny?#}
+                <li>
+                    {{product.metaProduct.category.name}}                    
+                </li>
+            {% categories = category->parent %}
+            {% endfor %}
+        </ul>
+            
+        Data ważności: {{ product.expireAt|date('Y-m-d') }}
+    </li>
+    
+{% endfor %}
+</ol>

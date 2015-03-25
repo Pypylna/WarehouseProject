@@ -25,7 +25,7 @@ class StoreController extends Controller
 
 
 	/**
-	 * @Route("/store/viewall")
+	 * @Route("/store/viewall", name="/store/viewall")
 	 * Listuje wszystkie sklepy
 	 */
 	public function viewallAction()
@@ -40,7 +40,7 @@ class StoreController extends Controller
 
 	/**
      *
-     * @Route("/store/new")
+     * @Route("/store/new", name="/store/new")
      */
     public function newAction(Request $request)
     {
@@ -57,19 +57,6 @@ class StoreController extends Controller
 			#todo nowa grupa
 		))
         ->getForm();
-
-		#info -> submit do widoku, bo:
-        # 1. jest w nim definowany używany znacznik (<submit>),
-        #       a decyzja czy go użyć, czy nie leży w gestii frontendowców.
-        #       Gdyby postanowili użyć innego znacznika w jego miejsce
-        #       (np <input>) albo nie chcieli go użüwać wcale (javascript)
-        #       musieliby odnaleźć to miejsce w kodzie,
-        #       gdzie został on dodany do formularza lub w brzydki sposób
-        #       go ukryć za pomocą css-ów, co mogłoby się odbić
-        #       np na pozycjonowaniu strony
-        # 2. celem backendowców jest stworzyć część serwerową,
-        #       która będzie możliwie kuloodporna. Brzmi skromnie, ale to nawał
-        #       pracy.
 
         $form->handleRequest($request);
         if($form->isValid())
