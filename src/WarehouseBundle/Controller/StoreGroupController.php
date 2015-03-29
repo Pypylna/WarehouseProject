@@ -12,29 +12,32 @@ use Symfony\Component\HttpFoundation\Request;
 class StoreGroupController extends Controller
 {
     #todo editAction
-	#todo deleteAction
+    #todo deleteAction
+    #fixme Zobacz - każda ścieżka zaczyna się od "/group"
+    #       W takich wypadkach można nad klasą dać annotacje do ścieżki,
+    #       a przy akcjach tylko odpowiednie końcówki.
 
 
-	/**
-	 * @Route("/group")
-	 */
-	public function indexAction()
-	{
-		#todo 
-	}
+    /**
+     * @Route("/group")
+     */
+    public function indexAction()
+    {
+        #todo
+    }
 
 
-	/**
-	 * @Route("/group/viewall", name="/group/viewall")
-	 * Listuje wszystkie dostępne grupy
-	 */
-	public function viewallAction()
-	{
-		#todo
-	}
+    /**
+     * @Route("/group/viewall", name="/group/viewall")
+     * Listuje wszystkie dostępne grupy
+     */
+    public function viewallAction()
+    {
+        #todo
+    }
 
 
-	/**
+    /**
      *
      * @Route("/group/new", name="/group/new")
      */
@@ -54,7 +57,7 @@ class StoreGroupController extends Controller
             $dm->persist($group);
             $dm->flush();
 
-				#todo - flash! i odpowiedni widok
+                #todo - flash! i odpowiedni widok
                 return $this->render('store/successNewStore.html.twig');
         }
 

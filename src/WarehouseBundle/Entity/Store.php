@@ -47,12 +47,12 @@ class Store
      */
     private $localization;
 
-	
+
 	/**
 	 * @ORM\ManyToOne(targetEntity="StoreGroup", inversedBy="stores")
 	 */
 	private $group;
-	
+
 
     /**
      * Get id
@@ -109,7 +109,14 @@ class Store
     {
         return $this->localization;
     }
-	
+
+    // #error brakowało tu settera dla StoreGroup
+    public function setGroup(StoreGroup $group)
+    {
+        $this->group = $group;
+        return $this;
+    }
+
 	public function getGroup()
 	{
 		return $this->group;

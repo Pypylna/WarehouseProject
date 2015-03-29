@@ -59,48 +59,56 @@ class ProductController extends Controller
                      'form'=>$form->createView()
                  ));
     }
-	
+
 	/**
-	 * @Route("/product/reduce/{id}", name="/product/reduce")
+     * #notice strasznie zły name/alias -> "/product/reduce"
+	 * @Route("/product/reduce/{id}", name="product_reduce")
 	 */
 	public function reduceAmountAction(Request $request, $id)
 	{
-		
 		$product = $this->getDoctrine()
 				->getRepository('WarehouseBundle:Product')
 				->findOneById($id);
-		
-		
+
 		$form = $this->createFormBuilder()
-				->add('ilosc','text',array(
+        // typ pola "text" też zadziała, ale lepszy byłby tutaj
+        // chyba integer. Mniej problemogenny
+				->add('ilosc', 'text', array(
 					'label' => 'Zmniejsz o:',
 					'constraints' => array(
 						new Range(array(
 							'max' => $product->getAmount(),
+                            // żeby działało, potrzeba spacji dookoła wąsatych
 							'maxMessage' => "Mniej niż {{limit}}",
 						))
 					)
 				))
 				->getForm();
-		
+
 		#PROBLEM - Kolejny if, do którego nie chce mi wejść...
 		#Na pewno właściwe constraints u góry?
+        #error: Zapomniałaś o $form->handleRequest() ?
+
+        // $form->handleRequest($request);
+
+        // var_dump($form->isValid()); // false
 		if($form->isValid())
 		{
 			var_dump($form->getData());
-			
+            die;
+
 			//$product->setAmount( $product->getAmount() -  )
-			
+
 			$dm=$this->getDoctrine()
 					->getManager()
 					->persist($product)
 					->flush();
 				#todo - odpowiedni widok
                 return $this->render('store/successNewStore.html.twig');
-          
+
 		}
-		
-		
+
+
 		return $this->render('product/reduceAmount.html.twig', array(
 			'form' => $form->createView(),
 			'limit' => $product->getAmount(),
