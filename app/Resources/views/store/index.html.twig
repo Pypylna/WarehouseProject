@@ -1,13 +1,4 @@
 <h2>Zarządzaj bazą sklepów</h2>
 
-
-{#
-    #fixme nie mam takiej ścieżki - menu u mnie nie działa.
-
-    Rozwiązanie: funkcja twigowa {{ path('alias_do_akcji') }}
-
-    Wygeneruje ona odpowiedni link bez względu na to na czyim komputerze
-        jest odpalany serwer.
- #}
-<a href="http://localhost/WarehouseProject/web/app_dev.php/store/viewall">Pokaż wszystkie sklepy</a><br>
-<a href="http://localhost/WarehouseProject/web/app_dev.php/store/new">Dodaj nowy sklep</a>
+<a href={{ path('/store/viewall') }}>Pokaż wszystkie sklepy</a><br>
+<a href={{ path('/store/new') }} >Dodaj nowy sklep</a>

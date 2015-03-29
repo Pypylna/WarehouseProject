@@ -49,7 +49,7 @@ class Store
 
 	
 	/**
-	 * @ORM\ManyToOne(targetEntity="Store", inversedBy="stores")
+	 * @ORM\ManyToOne(targetEntity="StoreGroup", inversedBy="stores")
 	 */
 	private $group;
 	

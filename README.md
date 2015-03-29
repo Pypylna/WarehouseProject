@@ -1,69 +1,51 @@
-Symfony Standard Edition
-========================
+Serwis do inwentaryzacji magazynów/sklepów.
+Dodajesz sobie magazyn. Dodajesz produkty. Produkty są pokategoryzowane i przypisane do drzewka kategorii. Produkty mogą być trwałe (np części do samochodów), jak i z datą ważności (np jedzenie). Każdy produkt ma też podaną jego ilość w magazynie na stanie, jak i cenę i kod produktu. Jeden magazyn może należeć do jednej sieci (magazynów/sklepów). Kategorie i ilość produktów są współdzielone w sieci (jest informacja, że produkt jest dostępny, tyle że w innym magazynie).
 
-Welcome to the Symfony Standard Edition - a fully-functional Symfony2
-application that you can use as the skeleton for your new applications.
+Twoim zadaniem jest stworzenie odpowiedniego backendu tak, by osoba z niego korzystająca mogła dodawać/pomniejszać ilość produktów, łatwo odnajdować te niedługo się kończące (wg pozostałej ilości) oraz te, które niedługo się zepsują (wg daty ważności). Może też listować sobie produkty w sklepie/magazynie (widzi wtedy w pierwszej kolejności produkty w danym magazynie, dopiero później w sieci).
 
-For details on how to download and get started with Symfony, see the
-[Installation][1] chapter of the Symfony Documentation.
+Funkcje możesz wymyślić też sama, ja tutaj podaję tylko Twój cel do zrobienia.
 
-What's inside?
---------------
+Widzę to tak (wstępny zarys, którego nie musisz się trzymać):
 
-The Symfony Standard Edition is configured with the following defaults:
+StoreGroups:
+* name
+* stores
 
-  * An AppBundle you can use to start coding;
+Store:
+* name
+* localization
+* storeGroup
 
-  * Twig as the only configured template engine;
+Category:
+* store/storeGroup
+* name
+* parent
+* childrens
 
-  * Doctrine ORM/DBAL;
+Product:
+* name
+* description
+* price
+* category
+* keywords
+* exprireAt
+* store
+* amount
 
-  * Swiftmailer;
 
-  * Annotations enabled for everything.
+Pułapki: Produkty mogą występować w grupach (np "mleko końskie 1l" w ilości 1000szt, z czego 200 zepsuje się jutro, 600 pojutrze, a reszta popojutrze). Moja propozycja - MetaProdukty.
 
-It comes pre-configured with the following bundles:
+MetaProduct:
+* name
+* description
+* price
+* category
+* keywords
+* store
+* products
 
-  * **FrameworkBundle** - The core Symfony framework bundle
+Product:
+* metaProduct
+* expireAt
 
-  * [**SensioFrameworkExtraBundle**][6] - Adds several enhancements, including
-    template and routing annotation capability
-
-  * [**DoctrineBundle**][7] - Adds support for the Doctrine ORM
-
-  * [**TwigBundle**][8] - Adds support for the Twig templating engine
-
-  * [**SecurityBundle**][9] - Adds security by integrating Symfony's security
-    component
-
-  * [**SwiftmailerBundle**][10] - Adds support for Swiftmailer, a library for
-    sending emails
-
-  * [**MonologBundle**][11] - Adds support for Monolog, a logging library
-
-  * [**AsseticBundle**][12] - Adds support for Assetic, an asset processing
-    library
-
-  * **WebProfilerBundle** (in dev/test env) - Adds profiling functionality and
-    the web debug toolbar
-
-  * **SensioDistributionBundle** (in dev/test env) - Adds functionality for
-    configuring and working with Symfony distributions
-
-  * [**SensioGeneratorBundle**][13] (in dev/test env) - Adds code generation
-    capabilities
-
-All libraries and bundles included in the Symfony Standard Edition are
-released under the MIT or BSD license.
-
-Enjoy!
-
-[1]:  http://symfony.com/doc/2.6/book/installation.html
-[6]:  http://symfony.com/doc/2.6/bundles/SensioFrameworkExtraBundle/index.html
-[7]:  http://symfony.com/doc/2.6/book/doctrine.html
-[8]:  http://symfony.com/doc/2.6/book/templating.html
-[9]:  http://symfony.com/doc/2.6/book/security.html
-[10]: http://symfony.com/doc/2.6/cookbook/email.html
-[11]: http://symfony.com/doc/2.6/cookbook/logging/monolog.html
-[12]: http://symfony.com/doc/2.6/cookbook/assetic/asset_management.html
-[13]: http://symfony.com/doc/2.6/bundles/SensioGeneratorBundle/index.html
+Powyższe oznacza, że 1000 sztuk mleka "końskiego 1l" na magazynie oznacza istnienie 1000 wpisów w tabeli "products".

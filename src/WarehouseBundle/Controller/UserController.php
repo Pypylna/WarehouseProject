@@ -1,109 +1,172 @@
-<?php
-
-namespace WarehouseBundle\Controller;
+<?php namespace WarehouseBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use WarehouseBundle\Entity\StoreGroup;
 use WarehouseBundle\Entity\Store;
+use WarehouseBundle\Entity\Product;
 use Symfony\Component\HttpFoundation\Request;
 
 
 class UserController extends Controller
 {
 	/**
-	 * @Route("/user")
+	 * @Route("/user", name="/user")
 	 */
-	public function chooseGroupAction(Request $request)
+	public function chooseStoreGroupAction(Request $request)
 	{
 		$form1 = $this->createFormBuilder()
 			->add('group','entity', array(
 				'class' => 'WarehouseBundle:StoreGroup',
-				'property' => 'name'
+				'property' => 'name',
+				'required' => false,
 			))
 			->getForm();
 
 		$form1->handleRequest($request);
 
-        #potrzebna inna funkcja? isClicked?
-        #info nie porzebna
 		if($form1->isValid())
 		{
 			$group = $form1->getData();
-            //#info u mnie tak się zdażyło, że $group było puste.
-            // nie miałem też controllera dla StoreGroup. Nie dodałaś plików może?
-			// dump($group);
-   //          die;
-
-			$store = new Store();
-			$form2 = $this->createFormBuilder()
-				->add('store','entity',array(
-					'class' => 'WarehouseBundle:Store',
-                    //#info powyższe nam mówi "w tym polu będą używane obiekty klasy Store"
-                    //      czy to na pewno to, co chcesz tu osiągnąć?
-					'property' => 'name',
-					'choices' => $group->stores //u mnie null ~KM
-                    // #PROBLEM
-                    // #error - wysyłając pierwszy formularz pusty zmienna $group
-                    //      ma wartość null. A wykonywać ->stores na nullu nie wolno
-                    //
-                    // #info poniższy problem z querybuilderem wynika z tego, że:
-                    //      klucz 'query_builder' wskazuje na >> funkcję anonimową <<
-                    //      Czasem się w php coś takiego spotyka. W Javascripcie
-                    //      cały czas. Żeby przykazać coś do niej trzeba zastosować
-                    //      taką konstrukcję:
-                    //
-                    //      function(Klasa $obiekt) use ($parametr1, $parametr2, $itd) {
-                    //          // ciałko
-                    //      }
-                    //
-                    //      dopiero w środku można wtedy używać podanych parametrów
-                    //      i po nich np filtrować tak, jak chciałaś to zrobić.
-                    //
-//					'query_builder' => function(\Doctrine\ORM\EntityRepository $er)
-//						{
-//							return $er->createQueryBuilder('st')
-//								->leftJoin('st.group', 'group')   //ładnie, dobrze
-//								->where('group =: gr')            //brzydko, źle
-//								->setParameter('gr', $group)
-//
-//                                #error powyżej powinno być
-//                              ->where('group.id = :gr')
-//                              ->setParameter('gr', $group->getId()) // lub bez ->getId()
-//
-//							;
-//
-//
-//                          #info $group może być puste. W takim wypadku queryBuilder
-//                                  może się wysypać, gdy dostanie nulla.
-//                                  Można to załatwić np tak:
-//
-        //                          $qb = $er->createQueryBuilder('st')
-        //                              ->leftJoin('st.group', 'group');
-        //
-    //                              if ($group) {
-    //                                  $qb->where('jakieś warunki')
-//                                          ->setParameter('jakieś parametry');
-    //                              }
-    //
-    //                              return $qb
-    //                                  ->andWhere('więcej warunków, jeśli trzeba');
-    //
-//						},
-				))
-				->getForm();
-
-			return $this->render('user/choose2.html.twig', array(
-				'form' => $form2->createView()
-			));
+			
+			if($group['group']==null)
+			{
+				$stores = $this->getDoctrine()
+						->getRepository('WarehouseBundle:Store')
+						->findByGroup(null);
+				
+			}
+			else
+			{
+				$stores = $this->getDoctrine()
+						->getRepository('WarehouseBundle:Store')
+						->findByGroup($group['group']);
+			}
+			
+			return $this->forward('WarehouseBundle:User:chooseGroup', array(
+					'stores' => $stores,
+					));
 		}
-
-
-
+			
 		return $this->render('user/choose1.html.twig', array(
 			'form' => $form1->createView()
+			));
+	}
+
+	
+	public function chooseGroupAction(Request $request,$stores)
+	{
+		$form2 = $this->createFormBuilder()
+		->add('store','entity', array(
+			'class' => 'WarehouseBundle:Store',
+			'property' => 'name',
+			'choices' => $stores
+			))
+		->getForm();
+		
+		$form2->handleRequest($request);
+		
+		#PROBLEM dalej nie chce mi wejść do tej pętli...
+		if($form2->isValid())
+		{
+			$store = $form2->getData();
+
+			var_dump($store);
+
+			#todo
+			#błędne array + obsluga pustej grupy
+			return  $this->redirectToRoute('userControl', array(
+				'group' => $group,
+				'store' => $store
+				));
+		}
+		
+					
+		return $this->render('user/choose2.html.twig', array(
+			'form' => $form2->createView()
+			));
+	}
+	
+	
+	
+	
+	/**
+	 * @Route("/user/{groupId}/{storeId}", name="userControl")
+	 * @param type $groupId
+	 * @param type $storeId
+	 */
+	public function userControlAction($groupId, $storeId)
+	{
+		return $this->render('user/control.html.twig', array(
+			'group' => $groupId,
+			'store' => $storeId
 		));
 	}
 
+	/**
+	 * @Route("/user/{groupId}/{storeId}/store", name="/user/storeProducts")
+	 * @param type $groupId
+	 * @param type $storeId
+	 * 
+	 */
+	public function showStoreProductsAction($groupId, $storeId)
+	{
+		#todo? - wyświetlanie po kategoriach
+		$dm = $this->getDoctrine()->getManager();
+		
+		$products = $dm->getRepository('WarehouseBundle:Product')
+				->createQueryBuilder('p')
+				->leftJoin('p.store', 's')
+				->where('s.id = :sid')
+				->setParameter('sid', $storeId)
+				->getQuery()
+				->getResult();
+		
+		
+		return $this->render('user/viewStoreProducts.html.twig',array(
+			'products'=>$products,
+		)
+		);
+		
+	}
+
+	/**
+	 * @Route("/user/{groupId}/{storeId}/group", name="/user/groupProducts")
+	 * @param type $groupId
+	 * @param type $storeId
+	 * 
+	 */
+	public function showGroupProductsAction($groupId, $storeId)
+	{
+		$products1 = $this->getDoctrine()->getManager()
+				->getRepository('WarehouseBundle:Product')
+				->createQueryBuilder('p')
+				->leftJoin('p.store', 's')
+				->where('s.id = :sid')
+				->setParameter('sid', $storeId)
+				->getQuery()
+				->getResult();
+		
+		$products2 = $this->getDoctrine()->getManager()
+				->getRepository('WarehouseBundle:Product')
+				->createQueryBuilder('p')
+				->leftJoin('p.group', 'g')
+				->where('g.id = :gid')
+				->setParameter('gid', $groupId)
+				->leftJoin('g.store','s')
+				->where('s.id != :sid')
+				->setParameter('sid', $storeId)
+				->getQuery()
+				->getResult();
+		
+		
+		return $this->render('user/viewGroupProducts.html.twig',array(
+			'products1'=>$products1,
+			'products2'=>$products2
+		)
+		);
+	}
+	
+	
 }

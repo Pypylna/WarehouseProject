@@ -1,0 +1,34 @@
+
+<h2>Produkty w Twoim sklepie:</h2>
+
+{#todo uwaga!- błędne path#}
+<a href={{ path('/user') }}><button >Pokaż wg<br>daty ważności</button></a>
+<a href={{ path('/user') }}><button >Pokaż wg<br>kategorii</button></a><br>
+
+
+Wszystkie produkty: <br>
+<ol>
+{% for product in products %}
+    <li>
+        {#todo#}
+        Nazwa: {{ product.metaProduct.name }} <br>
+        Cena: {{ product.metaProduct.price }}<br>
+        Ilość: {{ product.amount }}<br>
+        Kategoria:<br>
+        <ul>
+            {#PROBLEM! Nie rzuca błędem, ale nie wyświetla kategorii#}
+            
+            {% for category in product.metaProduct.category %}
+                <li>
+                    {% include "store/includes/category.html.twig" with {'category':category} %}         
+                </li>
+            {% endfor %}
+        </ul>
+            
+        Data ważności: {{ product.expireAt|date('Y-m-d') }}<br>
+        {#todo#}
+        <a href={{ path('/product/reduce', {'id':product.id}) }}><button>Zmniejsz ilość</button></a>
+    </li>
+    
+{% endfor %}
+</ol>
