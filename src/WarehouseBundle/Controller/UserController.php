@@ -6,19 +6,30 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use WarehouseBundle\Entity\StoreGroup;
 use WarehouseBundle\Entity\Store;
 use WarehouseBundle\Entity\Product;
+use WarehouseBundle\Repository\ProductReposirtory;
 use Symfony\Component\HttpFoundation\Request;
 
-
+/**
+ * @Route("/user")
+ */
 class UserController extends Controller
 {
     /**
-     * #fixme zły name. Był "/user", zmienam na "user_choose_store_group"
-     * @Route("/user", name="user_choose_store_group")
+	 * @Route("/test", name="user_test")
+	 */
+	public function testAction()
+	{
+		return $this->render('base.html.twig');
+	}
+
+
+	
+	/**
+     * @Route("", name="user_choose_store_group")
      */
     public function chooseStoreGroupAction(Request $request)
     {
-        // $form1 = $this->createFormBuilder()
-        $form = $this->createFormBuilder()   //
+        $form = $this->createFormBuilder()
             ->add('group','entity', array(
                 'class' => 'WarehouseBundle:StoreGroup',
                 'property' => 'name',
@@ -29,22 +40,6 @@ class UserController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            //może być obiektem klasy StoreGroup lub nullem
-            // $group = $form->getData();
-
-            // #notice: zakomentowałem, bo oba warunki robią dokładnie to samo
-            //  plus ten kod nie jest potrzebny z racji querybuildera
-            //      Ale muszę Cię pochwalić za pomysłowość.
-            // if ($group==null) {
-            //     $stores = $this->getDoctrine()
-            //         ->getRepository('WarehouseBundle:Store')
-            //         ->findByGroup(null);
-            // } else {
-            //     $stores = $this->getDoctrine()
-            //             ->getRepository('WarehouseBundle:Store')
-            //             ->findByGroup($group['group']);
-            // }
-            //
             $group = $form->getData()['group'];
             if ($group instanceof StoreGroup) {
                 $groupId = $group->getId();
@@ -52,8 +47,6 @@ class UserController extends Controller
                 $groupId = 0;
             }
 
-            // return $this->forward(
-                // 'WarehouseBundle:User:chooseGroup', array(
             return $this->redirectToRoute(
                 'user_choose_group', array(
                     'groupId' => $groupId,
@@ -68,17 +61,15 @@ class UserController extends Controller
 
 
     /**
-     * #fixme brak annotacji
      * @Route(
-     *     "/user/groupChoose/{groupId}",
+     *     "/groupChoose/{groupId}",
      *     name="user_choose_group",
      *     defaults={"groupId": "0"}
      * )
      */
     public function chooseGroupAction(Request $request, $groupId)
     {
-        //przykładowy query builder
-        // 1. przygotowujemy sobie coś, co nam go zbuuje, np repozytorium
+		#fragment Konrada (commit ba22c)
         $repo = $this->getDoctrine()->getManager()
             ->getRepository('WarehouseBundle:Store')
         ;
@@ -87,42 +78,17 @@ class UserController extends Controller
         ->add('store','entity', array(
             'class' => 'WarehouseBundle:Store',
             'property' => 'name',
-            // 'choices' => $stores
-            // #notice poniższy parametr oczekuje, żę dostanie obiekt
-            //  klasy QueryBuilder. Nie jest ważne, czy zbuduje go funkcja anonimowa,
-            // czy Qb będzie przygotowany wcześniej. Tutaj użyłem metody mieszanej
-            // która jest nie najpiękniejsza (formularz powinien siedzieć w osobnej klasie).
-            // Do funkcji anonimowe przekazuję dwa parametry: nasze repozytorium oraz
-            // id wybranej we wcześniejszym kroku grupy.
             'query_builder' => function() use ($repo, $groupId) {
-                // #notice zaczynam tworzyć Qb. daję mu alias "s"
-                //  i dołączam do niego StoreGrupy zapisując je pod skrótem sg
                 $qb = $repo->createQueryBuilder('s')
                     ->leftJoin('s.group', 'sg')
                 ;
-
-                // tutaj tworzymy warunek. Jeżeli zmienna $groupId istnieje
-                // i nie jest zerem/nullem/pustym stringiem, to...
                 if ($groupId) {
-                    // ...to ogranicz ilość wyników do tych obiektów Store
-                    // których id przypisanej im grupy jest równe $groupId
-                    $qb->andWhere('sg.id = :groupId') //pokaż tylko te wyniki
-                        ->setParameter('groupId', $groupId) //które mają literkę "a" w sobie
+                    $qb->andWhere('sg.id = :groupId')
+                        ->setParameter('groupId', $groupId)
                     ;
                 }
-                // w przeciwnym wypadku po prostu pomijamy ten warunek.
-
-                // oczywiście możemy dodać więcej obostrzeń. Poniżej
-                // dodalibyśmy warunek, że Store musi mięć w nazwie
-                // literkę "a"
-                // $qb->andWhere('s.name LIKE :lit')
-                // ->setParameter('lit', '%a%')
-
-
-                // Wyniki przed wysłaniem dalej możemy jeszcze posortować
-                $qb->orderBy('s.name', 'asc'); //alfabetycznie wg imienia
-
-                // gdy to już wszystko, podajemy QueryBuildera do returna
+                $qb->orderBy('s.name', 'asc');
+				
                 return $qb;
             }
         ))
@@ -130,17 +96,10 @@ class UserController extends Controller
 
         $form->handleRequest($request);
 
-        #PROBLEM dalej nie chce mi wejść do tej pętli...
-        #   #error nie chciało Ci wejść do pętli, bo to nie byłą akcja (nie miała routingu.
-        #       wysyłany formularz wracał do akcji powyżej (bo stamtąd był wysłany)
         if($form->isValid())
         {
-            $store = $form->getData();
-
-            var_dump($store);
-            dump($form->getData()['store']);//wynikiem jest obiekt klasy Store
-            // wybrany z ograniczonej przez nas listy
-            die;
+            $store = $form->getData()['store'];
+			die;
 
             #todo
             #błędne array + obsluga pustej grupy
@@ -159,7 +118,7 @@ class UserController extends Controller
 
 
     /**
-     * @Route("/user/{groupId}/{storeId}", name="userControl")
+     * @Route("/{groupId}/{storeId}", name="user_Control")
      * @param type $groupId
      * @param type $storeId
      */
@@ -172,7 +131,7 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/user/{groupId}/{storeId}/store", name="/user/storeProducts")
+     * @Route("/{groupId}/{storeId}/store", name="user_store_products")
      * @param type $groupId
      * @param type $storeId
      *
@@ -182,15 +141,10 @@ class UserController extends Controller
         #todo? - wyświetlanie po kategoriach
         $dm = $this->getDoctrine()->getManager();
 
+		#error! Wyrzuca b��d - findAllInStore() niezdfiniowana...
         $products = $dm->getRepository('WarehouseBundle:Product')
-                ->createQueryBuilder('p')
-                ->leftJoin('p.store', 's')
-                ->where('s.id = :sid')
-                ->setParameter('sid', $storeId)
-                ->getQuery()
-                ->getResult();
-
-
+				->findAllInStore($storeId);
+		
         return $this->render('user/viewStoreProducts.html.twig',array(
             'products'=>$products,
         )
@@ -199,7 +153,7 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/user/{groupId}/{storeId}/group", name="/user/groupProducts")
+     * @Route("/{groupId}/{storeId}/group", name="user_group_products")
      * @param type $groupId
      * @param type $storeId
      *

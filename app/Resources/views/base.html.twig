@@ -2,12 +2,41 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}Twój Magazyn{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <link rel="stylesheet"
+              href="{{ asset('//css/foundation.min.css') }}"
+              type="text/css" />
+        <link rel="stylesheet"
+              href="{{ asset('/css/normalize.css') }}"
+              type="text/css" />
+        <script type="text/javascript"
+              src="{{ asset('/js/vendor/modernizr.js') }}"></script>
+        <script type="text/javascript"
+                src="{{ asset('/js/vendor/jquery.js') }}"></script>
+        <script type="text/javascript"
+                src="{{ asset('/js/foundation.min.js') }}"></script>
     </head>
     <body>
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
+        
+        {#error nie wygl¹da tak ³adnie jak chyba powinno#}
+        
+        <table>
+        <tr>
+                <td>a11</td>	<td>a12</td>
+        </tr>
+        <tr>
+                <td>a21</td>	<td>a22</td>
+        </tr>
+        </table>
+        
+        
+        
+        
+        <script type="text/javascript">
+            $(document).foundation();
+        </script>
     </body>
 </html>

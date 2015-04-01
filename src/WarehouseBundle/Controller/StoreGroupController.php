@@ -8,18 +8,16 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use WarehouseBundle\Entity\StoreGroup;
 use Symfony\Component\HttpFoundation\Request;
 
-
+/**
+ * @Route("/group")
+ */
 class StoreGroupController extends Controller
 {
     #todo editAction
     #todo deleteAction
-    #fixme Zobacz - każda ścieżka zaczyna się od "/group"
-    #       W takich wypadkach można nad klasą dać annotacje do ścieżki,
-    #       a przy akcjach tylko odpowiednie końcówki.
-
 
     /**
-     * @Route("/group")
+     * 
      */
     public function indexAction()
     {
@@ -28,8 +26,8 @@ class StoreGroupController extends Controller
 
 
     /**
-     * @Route("/group/viewall", name="/group/viewall")
-     * Listuje wszystkie dostępne grupy
+     * @Route("/viewall", name="/group/viewall")
+     * Listuje wszystkie dostepne grupy
      */
     public function viewallAction()
     {
@@ -39,7 +37,7 @@ class StoreGroupController extends Controller
 
     /**
      *
-     * @Route("/group/new", name="/group/new")
+     * @Route("/new", name="/group/new")
      */
     public function newAction(Request $request)
     {

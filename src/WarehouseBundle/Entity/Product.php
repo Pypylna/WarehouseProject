@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Product
- *
+ * @ORM\Entity(repositoryClass="WarehouseBundle\Repository\ProductRepository")
  * @ORM\Table()
  * @ORM\Entity
  */

@@ -8,47 +8,36 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use WarehouseBundle\Entity\Product;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\Range;
+use WarehouseBundle\Form\ReduceAmountProductType;
 
-
+/**
+ * @Route("/product")
+ */
 class ProductController extends Controller
 {
 
     /**
      *
-     * @Route("/product/new")
+     * @Route("/new", name="product_new")
      */
     public function newAction(Request $request)
     {
 		$product = new Product();
 
-        $form=$this->createFormBuilder($product)
-		#todo - 艂atwiejszy wyb贸r - po kategoriach
-        ->add('metaProduct', 'entity',array(
-			'class' => 'WarehouseBundle:MetaProduct',
-			'property' => 'name'
-		))
-		#todo - 艂atwiejszy wyb贸r - po grupach
-        ->add('store','entity',array(
-			'class' => 'WarehouseBundle:Store',
-			'property' => 'name'
-		))
-		->add('expireAt','date')
-				#todo - domy艣lna data
-                #info - wsadzenie "na start" daty do odpowiedniej
-                #       w艂asno艣ci w klasie powinno za艂atwi膰 spraw臋 (strzelam)
-		->add('amount','text')
-		->getForm();
-
-
+        $form=$this->createForm(new NewProductType, $product, array(
+			'action' => $this->generateUrl('product_new'),
+			'method' => 'POST',
+		));
+		
         $form->handleRequest($request);
         if($form->isValid())
-            {
+        {
             $dm=$this->getDoctrine()->getManager();
-            $dm->persist($product);
-            $dm->flush();
+            $dm->persist($product)
+				->flush();
 				#todo - odpowiedni widok
                 return $this->render('store/successNewStore.html.twig');
-            }
+        }
         else
         {
 			dump($form->getErrors());
@@ -61,53 +50,31 @@ class ProductController extends Controller
     }
 
 	/**
-     * #notice strasznie z艂y name/alias -> "/product/reduce"
-	 * @Route("/product/reduce/{id}", name="product_reduce")
+	 * @Route("/reduce/{id}", name="product_reduce")
 	 */
 	public function reduceAmountAction(Request $request, $id)
 	{
 		$product = $this->getDoctrine()
 				->getRepository('WarehouseBundle:Product')
 				->findOneById($id);
+		#error wywo砤nie niedzia砤j筩ego formularza
+		$form = $this->createForm(new ReduceAmountProductType, $product, array(
+			'action' => $this->generateUrl('product_new'),
+			'method' => 'POST',
+		));
 
-		$form = $this->createFormBuilder()
-        // typ pola "text" te偶 zadzia艂a, ale lepszy by艂by tutaj
-        // chyba integer. Mniej problemogenny
-				->add('ilosc', 'text', array(
-					'label' => 'Zmniejsz o:',
-					'constraints' => array(
-						new Range(array(
-							'max' => $product->getAmount(),
-                            // 偶eby dzia艂a艂o, potrzeba spacji dooko艂a w膮satych
-							'maxMessage' => "Mniej ni偶 {{limit}}",
-						))
-					)
-				))
-				->getForm();
-
-		#PROBLEM - Kolejny if, do kt贸rego nie chce mi wej艣膰...
-		#Na pewno w艂a艣ciwe constraints u g贸ry?
-        #error: Zapomnia艂a艣 o $form->handleRequest() ?
-
-        // $form->handleRequest($request);
-
-        // var_dump($form->isValid()); // false
+         $form->handleRequest($request);
+		 
 		if($form->isValid())
 		{
-			var_dump($form->getData());
-            die;
-
-			//$product->setAmount( $product->getAmount() -  )
+			$product->setAmount( $product->getAmount() - $form->getData()['ilosc'] );
 
 			$dm=$this->getDoctrine()
 					->getManager()
-					->persist($product)
 					->flush();
 				#todo - odpowiedni widok
                 return $this->render('store/successNewStore.html.twig');
-
 		}
-
 
 		return $this->render('product/reduceAmount.html.twig', array(
 			'form' => $form->createView(),

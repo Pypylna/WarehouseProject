@@ -110,7 +110,6 @@ class Store
         return $this->localization;
     }
 
-    // #error brakowało tu settera dla StoreGroup
     public function setGroup(StoreGroup $group)
     {
         $this->group = $group;
