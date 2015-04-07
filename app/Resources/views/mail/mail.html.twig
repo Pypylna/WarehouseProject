@@ -1,0 +1,18 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <div class="large-6 columns">
+
+        Napisz do mnie maila!
+        
+        {{ form_start(form) }}
+        
+        {{form_row(form.from)}}
+        {{form_row(form.subject)}}
+        {{form_row(form.body)}}
+              
+        <button type="submit">Wyœlij</button>
+        {{ form_end(form) }}
+        
+    </div>
+{% endblock %}

@@ -50,7 +50,6 @@ class Store
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="StoreGroup", inversedBy="stores")
-	 * @ORM\JoinColumn(name="group", referencedColumnName="id")
 	 */
 	private $group;
 

@@ -1,4 +1,9 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+
 <h2>Zarządzaj bazą sklepów</h2>
 
 <a href={{ path('/store/viewall') }}>Pokaż wszystkie sklepy</a><br>
 <a href={{ path('/store/new') }} >Dodaj nowy sklep</a>
+{% endblock %}

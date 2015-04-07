@@ -1,22 +1,24 @@
+{% extends "baseUser.html.twig" %}
 
+{% block body %}
 <h2>Produkty w Twoim sklepie:</h2>
 
-{#todo uwaga!- błędne path#}
-<a href={{ path('/user') }}><button >Pokaż wg<br>daty ważności</button></a>
-<a href={{ path('/user') }}><button >Pokaż wg<br>kategorii</button></a><br>
+{#todo uwaga!- bledne path#}
+
+{#<a href={{ path('user_test') }} class="button" ></a>
+<a href={{ path('user_test') }} class="button" >Pokaz wg kategorii</a><br> #}
 
 
-Wszystkie produkty: <br>
+<h3>Wszystkie produkty: </h3>
 <ol>
 {% for product in products %}
     <li>
-        {#todo#}
         Nazwa: {{ product.metaProduct.name }} <br>
         Cena: {{ product.metaProduct.price }}<br>
-        Ilość: {{ product.amount }}<br>
+        Ilo��: {{ product.amount }}<br>
         Kategoria:<br>
         <ul>
-            {#PROBLEM! Nie rzuca błędem, ale nie wyświetla kategorii#}
+            {#error! Nie rzuca bledem, ale nie wyswietla kategorii #}
             
             {% for category in product.metaProduct.category %}
                 <li>
@@ -25,10 +27,10 @@ Wszystkie produkty: <br>
             {% endfor %}
         </ul>
             
-        Data ważności: {{ product.expireAt|date('Y-m-d') }}<br>
-        {#todo#}
-        <a href={{ path('/product/reduce', {'id':product.id}) }}><button>Zmniejsz ilość</button></a>
+        Data waznosci: {{ product.expireAt|date('Y-m-d') }}<br>
+        <a href={{ path('product_reduce', {'groupId':groupId, 'storeId':storeId, 'id':product.id } ) }} class="button">Zmniejsz ilosc</a>
     </li>
     
 {% endfor %}
 </ol>
+{% endblock %}

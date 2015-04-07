@@ -1,18 +1,23 @@
+{% extends "base.html.twig" %}
 
-Sklepy w naszej bazie:<br><br>
+{% block body %}
+    <div class="large-6 columns">
+        Sklepy w naszej bazie:<br><br>
 
-{% for group in storegroups %}
-    
-    Nazwa sieci: {{ group.name }} <br>
-    <ol>
-    {% for store in group.stores %}
-        <li>
-            Nazwa: {{store.name}}<br>
-            Adres: {{store.localization}}
-        </li>
-  
-    {% endfor %}
-    </ol>
-    
-    
-{% endfor %}
+        {% for group in storegroups %}
+
+            Nazwa sieci: {{ group.name }} <br>
+            <ol>
+            {% for store in group.stores %}
+                <li>
+                    Nazwa: {{store.name}}<br>
+                    Adres: {{store.localization}}
+                </li>
+
+            {% endfor %}
+            </ol>
+
+
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,14 +1,21 @@
-Dodaj nowy produkt do bazy danych<br><br>
+{% extends "base.html.twig" %}
 
-{{ form_start(form) }}
+{% block body %}
+    <div class="large-6 columns">
+        Dodaj nowy produkt do bazy danych<br><br>
 
-{{form_row(form.metaProduct) }}
-{{ form_row(form.store) }}
-{{ form_row(form.amount) }}
-{{ form_row(form.expireAt) }}
+        {{ form_start(form) }}
+
+        {{form_row(form.metaProduct) }}
+        {{ form_row(form.store) }}
+        {{ form_row(form.amount) }}
+        {{ form_row(form.expireAt) }}
 
 
 
-<button type="submit">Dodaj</button>
+        <button type="submit">Dodaj</button>
 
-{{ form_end(form) }}
+        {{ form_end(form) }}
+    </div>
+
+{% endblock body %}

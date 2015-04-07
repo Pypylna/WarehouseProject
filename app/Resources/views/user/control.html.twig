@@ -1,7 +1,15 @@
-<h2>Co chcesz teraz zrobiÄ‡?</h2>
+{% extends "base.html.twig" %}
 
-<a href={{ path('/user/storeProducts', {'groupId': group, 'storeId': store}) }}>PokaÅ¼ produkty w moim sklepie</a><br>
+{% block body %}
+    <h2>Co chcesz teraz zrobiæ?</h2>
 
-{#todo - +bÅ‚edne path!#}
-<a href={{ path('/user/groupProducts', {'groupId': group, 'storeId': store}) }}>PokaÅ¼ produkty w mojej grupie</a><br>
-<a href={{ path('/user/groupProducts', {'groupId': group, 'storeId': store}) }}>WprowadÅº dostawÄ™</a><br>
+    <a href={{ path('search_products', {'groupId': group, 'storeId': store, 'option':1}) }}>Wyszukaj wœród produktów mojej grupy</a><br>
+    
+    <a href={{ path('user_store_products', {'groupId': group, 'storeId': store}) }}>Poka¿ wszystkie produkty w moim sklepie</a><br>
+
+    {#todo - bledne path!#}
+    {% if group %}
+    <a href={{ path('user_store_products', {'groupId': group, 'storeId': store}) }}>Poka¿ produkty w mojej grupie</a><br>
+    {% endif %}
+    {#todo <a href={{ path('user_store_products', {'groupId': group, 'storeId': store}) }}>WprowadŸ dostawê</a><br> #}
+{% endblock %}

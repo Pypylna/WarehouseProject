@@ -1,0 +1,29 @@
+{% extends "baseUser.html.twig" %}
+
+{% block body %}
+    <div class="large-6 columns">
+        Wyszukaj:<br><br>
+
+        {{ form_start(form) }}
+
+        {{form_row(form.name) }}
+{#        {{ option }}#}
+        {% if option==1 %}
+            {{ form_row(form.store) }}
+        {% endif %}
+        {{ form_row(form.price_min) }}
+        {{ form_row(form.price_max) }}
+{#        {{ form_row(form.category) }}#}
+        {{ form_row(form.amount_min) }}
+        {{ form_row(form.amount_max) }}
+        {{ form_row(form.expireAt_min) }}
+        {{ form_row(form.expireAt_max) }}
+
+
+
+        <button type="submit">Szukaj</button>
+
+        {{ form_end(form) }}
+    </div>
+
+{% endblock body %}

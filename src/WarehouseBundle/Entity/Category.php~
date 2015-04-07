@@ -123,27 +123,4 @@ class Category
     {
         return $this->children;
     }
-
-    /**
-     * Add children
-     *
-     * @param \WarehouseBundle\Entity\Category $children
-     * @return Category
-     */
-    public function addChild(\WarehouseBundle\Entity\Category $children)
-    {
-        $this->children[] = $children;
-
-        return $this;
-    }
-
-    /**
-     * Remove children
-     *
-     * @param \WarehouseBundle\Entity\Category $children
-     */
-    public function removeChild(\WarehouseBundle\Entity\Category $children)
-    {
-        $this->children->removeElement($children);
-    }
 }

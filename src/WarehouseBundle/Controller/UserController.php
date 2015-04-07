@@ -19,6 +19,7 @@ class UserController extends Controller
 	 */
 	public function testAction()
 	{
+		#todo do usuniecia po naprawieniu wszystkich œcie¿ek
 		return $this->render('base.html.twig');
 	}
 
@@ -73,7 +74,7 @@ class UserController extends Controller
         $repo = $this->getDoctrine()->getManager()
             ->getRepository('WarehouseBundle:Store')
         ;
-
+		
         $form = $this->createFormBuilder()
         ->add('store','entity', array(
             'class' => 'WarehouseBundle:Store',
@@ -82,11 +83,20 @@ class UserController extends Controller
                 $qb = $repo->createQueryBuilder('s')
                     ->leftJoin('s.group', 'sg')
                 ;
+				#error
+//				Dla id==0, chcê, by wyœwietla³ store bez grupy
+//				Co siê dzieje:
+//					bez else wyœwietla wszystkie store
+//					z else nie wyœwietla nic
                 if ($groupId) {
                     $qb->andWhere('sg.id = :groupId')
                         ->setParameter('groupId', $groupId)
                     ;
-                }
+                }else{
+					$qb->andWhere('sg.id = :groupId')
+                        ->setParameter('groupId', NULL)
+                    ;
+				}
                 $qb->orderBy('s.name', 'asc');
 				
                 return $qb;
@@ -99,13 +109,10 @@ class UserController extends Controller
         if($form->isValid())
         {
             $store = $form->getData()['store'];
-			die;
-
-            #todo
-            #bÅ‚Ä™dne array + obsluga pustej grupy
-            return  $this->redirectToRoute('userControl', array(
-                'group' => $group,
-                'store' => $store
+			
+            return  $this->redirectToRoute('user_control', array(
+                'groupId' => $groupId,
+                'storeId' => $store->getId(),
                 ));
         }
 
@@ -114,11 +121,8 @@ class UserController extends Controller
             ));
     }
 
-
-
-
     /**
-     * @Route("/{groupId}/{storeId}", name="user_Control")
+     * @Route("/{groupId}/{storeId}", name="user_control")
      * @param type $groupId
      * @param type $storeId
      */
@@ -141,12 +145,13 @@ class UserController extends Controller
         #todo? - wyÅ›wietlanie po kategoriach
         $dm = $this->getDoctrine()->getManager();
 
-		#error! Wyrzuca b³¹d - findAllInStore() niezdfiniowana...
         $products = $dm->getRepository('WarehouseBundle:Product')
 				->findAllInStore($storeId);
 		
         return $this->render('user/viewStoreProducts.html.twig',array(
             'products'=>$products,
+			'groupId' => $groupId,
+			'storeId'=> $storeId,
         )
         );
 
@@ -160,28 +165,21 @@ class UserController extends Controller
      */
     public function showGroupProductsAction($groupId, $storeId)
     {
+		#error Gdzieœ tu wyrzuca b³¹d. Zanim to wsadzi³am do repozytorium dzia³a³o
+		
         $products1 = $this->getDoctrine()->getManager()
                 ->getRepository('WarehouseBundle:Product')
-                ->createQueryBuilder('p')
-                ->leftJoin('p.store', 's')
-                ->where('s.id = :sid')
-                ->setParameter('sid', $storeId)
-                ->getQuery()
-                ->getResult();
+                ->findAllInStore($storeId);
 
         $products2 = $this->getDoctrine()->getManager()
                 ->getRepository('WarehouseBundle:Product')
-                ->createQueryBuilder('p')
-                ->leftJoin('p.group', 'g')
-                ->where('g.id = :gid')
-                ->setParameter('gid', $groupId)
-                ->leftJoin('g.store','s')
-                ->where('s.id != :sid')
-                ->setParameter('sid', $storeId)
-                ->getQuery()
-                ->getResult();
+                ->findAllInGroupNotInStore($groupId,$storeId);
 
-
+		#pytanie
+		#chce zwróciæ wyniki posortowane - najpierw prdukty nale¿¹cego do danego store
+		#potem te nale¿¹ce to ca³ego group. Podzieli³am to na dwie akcjê, dwie, dwie tablice
+		#(które w³aœciwie mog³abym jeszcze scaliæ). Da sie to jakoœ ³adnie zrobiæ
+		#w querybuilderze?
         return $this->render('user/viewGroupProducts.html.twig',array(
             'products1'=>$products1,
             'products2'=>$products2

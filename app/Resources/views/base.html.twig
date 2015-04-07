@@ -2,41 +2,52 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Twój Magazyn{% endblock %}</title>
+        <title>{% block title %}Twoj Magazyn{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
         <link rel="stylesheet"
-              href="{{ asset('//css/foundation.min.css') }}"
+              href="{{ asset('foundation/css/foundation.min.css') }}"
               type="text/css" />
         <link rel="stylesheet"
-              href="{{ asset('/css/normalize.css') }}"
+              href="{{ asset('foundation/css/normalize.css') }}"
               type="text/css" />
         <script type="text/javascript"
-              src="{{ asset('/js/vendor/modernizr.js') }}"></script>
+              src="{{ asset('foundation/js/vendor/modernizr.js') }}"></script>
         <script type="text/javascript"
-                src="{{ asset('/js/vendor/jquery.js') }}"></script>
+                src="{{ asset('foundation/js/vendor/jquery.js') }}"></script>
         <script type="text/javascript"
-                src="{{ asset('/js/foundation.min.js') }}"></script>
+                src="{{ asset('foundation/js/foundation.min.js') }}"></script>
     </head>
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        {% for flashMessage in app.session.flashbag.get('notice') %}
+        <div data-alert class="alert-box success radius" style="text-align: center">
+            {{ flashMessage }}
+            <a href="#" class="close">&times;</a>
+        </div>
+        {% endfor %}
         
-        {#error nie wygl¹da tak ³adnie jak chyba powinno#}
+        {% block header %}
+        {% endblock %}
+            
+        {% block goBackUser %}
+        {% endblock %}
         
-        <table>
-        <tr>
-                <td>a11</td>	<td>a12</td>
-        </tr>
-        <tr>
-                <td>a21</td>	<td>a22</td>
-        </tr>
-        </table>
+        {% block body %}
+        {% endblock %}
         
+         {% block footer %}
+            <br><br>
+            <div class="row">
+                <div class="large-12 columns" style="text-align: center">
+                    <a href={{path('user_mail')}}>Kontakt</a> z Twórc¹
+                </div>
+            </div>
+        {% endblock %}
         
-        
-        
-        <script type="text/javascript">
+        {% block javascripts %}
+            <script type="text/javascript">
             $(document).foundation();
         </script>
+        {% endblock %}
+        
     </body>
 </html>

@@ -1,5 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    Homepage.
+    <h2>Witaj!</h2>
+    Zaloguj siê jako:
+    <br>
+    {#todo#}<a href={{ path('user_test') }} class="button" >Admin</a>
+    <a href={{ path('user_choose_store_group') }} class="button" >User</a>
+    
 {% endblock %}

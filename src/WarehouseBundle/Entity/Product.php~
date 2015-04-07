@@ -27,7 +27,6 @@ class Product
 
     /**
      * @ORM\ManyToOne(targetEntity="Store")
-	 * @ORM\JoinColumn(name="store", referencedColumnName="id")
      */
     private $store;
 

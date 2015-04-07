@@ -30,7 +30,6 @@ class StoreGroup
 
     /**
      * @ORM\OneToMany(targetEntity="Store", mappedBy="group")
-	 * @ORM\JoinColumn(name="stores", referencedColumnName="id")
      */
     private $stores;
 
@@ -98,27 +97,4 @@ class StoreGroup
     }
 	
 
-
-    /**
-     * Add stores
-     *
-     * @param \WarehouseBundle\Entity\Store $stores
-     * @return StoreGroup
-     */
-    public function addStore(\WarehouseBundle\Entity\Store $stores)
-    {
-        $this->stores[] = $stores;
-
-        return $this;
-    }
-
-    /**
-     * Remove stores
-     *
-     * @param \WarehouseBundle\Entity\Store $stores
-     */
-    public function removeStore(\WarehouseBundle\Entity\Store $stores)
-    {
-        $this->stores->removeElement($stores);
-    }
 }

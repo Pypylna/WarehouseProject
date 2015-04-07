@@ -1,10 +1,16 @@
-<h2>Dodaj nową grupę do bazy danych</h2>
+{% extends "base.html.twig" %}
 
-{{ form_start(form) }}
+{% block body %}
+    <div class="large-6 columns">
+        <h2>Dodaj nową grupę do bazy danych</h2>
 
-{{ form_row(form.name) }}
+        {{ form_start(form) }}
 
-<button type="submit">Dodaj</button>
+        {{ form_row(form.name) }}
+
+        <button type="submit">Dodaj</button>
 
 
-{{ form_end(form) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

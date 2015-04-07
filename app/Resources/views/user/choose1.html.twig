@@ -1,9 +1,17 @@
-Wybierz:<br><br>
+{% extends "base.html.twig" %}
 
-{{ form_start(form) }}
+{% block body %}
+    <div class="large-6 columns">
 
-{{form_row(form.group)}}
+        Wybierz:<br><br>
 
-<button type="submit">Wyślij</button>
+        {{ form_start(form) }}
 
-{{ form_end(form)}}
+        {{form_row(form.group)}}
+
+        <button type="submit">Wyślij</button>
+
+        {{ form_end(form)}}
+
+    </div>
+{% endblock %}

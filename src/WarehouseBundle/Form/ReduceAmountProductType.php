@@ -4,10 +4,18 @@
 	use Symfony\Component\Form\AbstractType;
 	use Symfony\Component\Form\FormBuilderInterface;
 	use Symfony\Component\Validator\Constraints\Range;
+	use WarehouseBundle\Entity\Product;
 	
 	class ReduceAmountProductType extends AbstractType
 	{
-		#error - Jak przekazaæ konkretny obiekt do tej akcji?
+		private $product;
+		
+		public function __construct(Product $arg)
+		{
+			$this->product = $arg;
+		}
+
+
 		public function buildForm(FormBuilderInterface $builder, array $options)
 		{
 			$builder
@@ -16,9 +24,9 @@
 					'precision' => 2,
 					'constraints' => array(
 						new Range(array(
-							'max' => $product->getAmount(),
+							'max' => $this->product->getAmount(),
 							'maxMessage' => "Nie wiecej niz {{ limit }} ",
-							'min' => 1,
+							'min' => 0,
 							'minMessage' => "Co najmniej {{ limit }}"
 						))
 					)
@@ -29,5 +37,4 @@
 		{
 			return 'reduce_amount_product';
 		}
-		//todo deafult options
 	}
