@@ -16,19 +16,21 @@ class MailController extends Controller
 	{
 		$mailer = $this->get('mailer');
 		$message = $mailer->createMessage();
-		
+
 		$form=$this->createForm(new MailType, $message, array(
 			'action' => $this->generateUrl('user_mail'),
 			'method' => 'POST',
 		));
-		
+
 		$form->handleRequest($request);
 		if($form->isValid()){
 			$message->setTo('pauptest@gmail.com');
 			$mailer->send($message);
-			#error - w mailu nie wyswietla siê od kogo dosta³am wiadomoœæ
+			#error - w mailu nie wyswietla siÃª od kogo dostaÂ³am wiadomoÅ“Ã¦
 			# problem po stronie gmaila?
-			
+            #fixme: Nie. Po prostu nie wysyÅ‚asz tej informacji.
+            #       UÅ¼yj ->setFrom(['email' => 'personalia'])
+
 			#todo - widok
 			return $this->render('base.html.twig');
 		}
@@ -36,6 +38,6 @@ class MailController extends Controller
 			'form'=>$form->createView(),
 		));
 	}
-	
-	
+
+
 }

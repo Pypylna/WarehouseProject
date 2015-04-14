@@ -4,6 +4,8 @@ namespace WarehouseBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+#fixme: Template jest (i ma pozostać) nieużywane, więc przydałoby się
+#   usunąć lub zakomentować tą linię (minimalna kwestia wydajności)
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use WarehouseBundle\Entity\StoreGroup;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +19,7 @@ class StoreGroupController extends Controller
     #todo deleteAction
 
     /**
-     * 
+     *
      */
     public function indexAction()
     {
