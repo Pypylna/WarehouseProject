@@ -19,12 +19,12 @@ class UserController extends Controller
 	 */
 	public function testAction()
 	{
-		#todo do usuniecia po naprawieniu wszystkich œcie¿ek
+		#todo do usuniecia po naprawieniu wszystkich Å“cieÂ¿ek
 		return $this->render('base.html.twig');
 	}
 
 
-	
+
 	/**
      * @Route("", name="user_choose_store_group")
      */
@@ -74,7 +74,7 @@ class UserController extends Controller
         $repo = $this->getDoctrine()->getManager()
             ->getRepository('WarehouseBundle:Store')
         ;
-		
+
         $form = $this->createFormBuilder()
         ->add('store','entity', array(
             'class' => 'WarehouseBundle:Store',
@@ -84,21 +84,31 @@ class UserController extends Controller
                     ->leftJoin('s.group', 'sg')
                 ;
 				#error
-//				Dla id==0, chcê, by wyœwietla³ store bez grupy
-//				Co siê dzieje:
-//					bez else wyœwietla wszystkie store
-//					z else nie wyœwietla nic
+//				Dla id==0, chcÃª, by wyÅ“wietlaÂ³ store bez grupy
+//				Co siÃª dzieje:
+//					bez else wyÅ“wietla wszystkie store
+//					z else nie wyÅ“wietla nic
+                #fixme: Else musi istnieÄ‡.
+                #   To wina bazy danych. Aby sprawdziÄ‡, czy coÅ› jest nullem
+                #   w czystym SQL-u uÅ¼yÅ‚abyÅ› tabela.nazwapola IS NULL.
+                #   To, co wysyÅ‚asz Baza rozumie jako... string 'NULL'.
+                #   A Å¼adne id nie jest stringiem 'NULL'.
+                #   RozwiÄ…zania
+                #   * UÅ¼ycie klasy Expr na pewno zadziaÅ‚a
+                #   * MoÅ¼esz sprÃ³bowaÄ‡ $qb->andWhere('sg.id IS NULL'), ale
+                #       nie gwarantuje, Å¼e zadziaÅ‚a
                 if ($groupId) {
                     $qb->andWhere('sg.id = :groupId')
                         ->setParameter('groupId', $groupId)
                     ;
                 }else{
+
 					$qb->andWhere('sg.id = :groupId')
                         ->setParameter('groupId', NULL)
                     ;
 				}
                 $qb->orderBy('s.name', 'asc');
-				
+
                 return $qb;
             }
         ))
@@ -109,7 +119,7 @@ class UserController extends Controller
         if($form->isValid())
         {
             $store = $form->getData()['store'];
-			
+
             return  $this->redirectToRoute('user_control', array(
                 'groupId' => $groupId,
                 'storeId' => $store->getId(),
@@ -142,12 +152,12 @@ class UserController extends Controller
      */
     public function showStoreProductsAction($groupId, $storeId)
     {
-        #todo? - wyÅ›wietlanie po kategoriach
+        #todo? - wyÃ…â€ºwietlanie po kategoriach
         $dm = $this->getDoctrine()->getManager();
 
         $products = $dm->getRepository('WarehouseBundle:Product')
 				->findAllInStore($storeId);
-		
+
         return $this->render('user/viewStoreProducts.html.twig',array(
             'products'=>$products,
 			'groupId' => $groupId,
@@ -165,8 +175,10 @@ class UserController extends Controller
      */
     public function showGroupProductsAction($groupId, $storeId)
     {
-		#error Gdzieœ tu wyrzuca b³¹d. Zanim to wsadzi³am do repozytorium dzia³a³o
-		
+		#error GdzieÅ“ tu wyrzuca bÂ³Â¹d. Zanim to wsadziÂ³am do repozytorium dziaÂ³aÂ³o
+        #fixme: MoÅ¼e przez to, Å¼e alias Å›cieÅ¼ki w routingu (name="..."),
+        #   jest taki sam, jak akcja wyÅ¼ej? Strzelam ;p
+
         $products1 = $this->getDoctrine()->getManager()
                 ->getRepository('WarehouseBundle:Product')
                 ->findAllInStore($storeId);
@@ -176,9 +188,9 @@ class UserController extends Controller
                 ->findAllInGroupNotInStore($groupId,$storeId);
 
 		#pytanie
-		#chce zwróciæ wyniki posortowane - najpierw prdukty nale¿¹cego do danego store
-		#potem te nale¿¹ce to ca³ego group. Podzieli³am to na dwie akcjê, dwie, dwie tablice
-		#(które w³aœciwie mog³abym jeszcze scaliæ). Da sie to jakoœ ³adnie zrobiæ
+		#chce zwrÃ³ciÃ¦ wyniki posortowane - najpierw prdukty naleÂ¿Â¹cego do danego store
+		#potem te naleÂ¿Â¹ce to caÂ³ego group. PodzieliÂ³am to na dwie akcjÃª, dwie, dwie tablice
+		#(ktÃ³re wÂ³aÅ“ciwie mogÂ³abym jeszcze scaliÃ¦). Da sie to jakoÅ“ Â³adnie zrobiÃ¦
 		#w querybuilderze?
         return $this->render('user/viewGroupProducts.html.twig',array(
             'products1'=>$products1,

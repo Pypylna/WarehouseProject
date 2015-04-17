@@ -15,22 +15,27 @@
     <li>
         Nazwa: {{ product.metaProduct.name }} <br>
         Cena: {{ product.metaProduct.price }}<br>
-        Ilo��: {{ product.amount }}<br>
+        Iloœæ: {{ product.amount }}<br>
         Kategoria:<br>
         <ul>
             {#error! Nie rzuca bledem, ale nie wyswietla kategorii #}
-            
+            {#
+                #fixme: To prawdopodobntie przez to, że metaproduct ma jedną
+                    kategorię. Foreach więc nie ma tablicy, na której mógłby
+                    pracować, więc ten blok jest pomijany
+            #}
+
             {% for category in product.metaProduct.category %}
                 <li>
-                    {% include "store/includes/category.html.twig" with {'category':category} %}         
+                    {% include "store/includes/category.html.twig" with {'category':category} %}
                 </li>
             {% endfor %}
         </ul>
-            
+
         Data waznosci: {{ product.expireAt|date('Y-m-d') }}<br>
         <a href={{ path('product_reduce', {'groupId':groupId, 'storeId':storeId, 'id':product.id } ) }} class="button">Zmniejsz ilosc</a>
     </li>
-    
+
 {% endfor %}
 </ol>
 {% endblock %}

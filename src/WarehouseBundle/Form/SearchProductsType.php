@@ -1,26 +1,26 @@
 <?php
 	namespace WarehouseBundle\Form;
-	
+
 	use Symfony\Component\Form\AbstractType;
 	use Symfony\Component\Form\FormBuilderInterface;
 	use Symfony\Component\Validator\Constraints\Range;
-	
+
 	class SearchProductsType extends AbstractType
 	{
 		private $groupId;
 		private $storeId;
-		
+
 //		0 - tylko dla store
-//		1 - dla ca³ej grupy
+//		1 - dla caÂ³ej grupy
 		private $option;
-		
+
 		public function __contruct($arg1,$arg2,$option)
 		{
 			$this->groupId = $arg1;
 			$this->storeId = $arg2;
 			$this->option = $option;
 		}
-		
+
 		public function buildForm(FormBuilderInterface $builder, array $options)
 		{
 			$builder
@@ -29,13 +29,13 @@
 					'required' => false,
 				))
 				->add('price_min', 'number',array(
-					'label' => 'dro¿sze ni¿',
+					'label' => 'droÂ¿sze niÂ¿',
 					'required' => false,
 					'precision' => 2,
 					)
 				)
 				->add('price_max', 'number',array(
-					'label' => 'tañsze ni¿',
+					'label' => 'taÃ±sze niÂ¿',
 					'required' => false,
 					'precision' => 2,
 					'constraints' => array(
@@ -51,7 +51,7 @@
 //					'required' => false,
 //				))
 				->add('amount_max','number',array(
-					'label' => 'mniej sztuk ni¿',
+					'label' => 'mniej sztuk niÂ¿',
 					'required' => false,
 					'precision' => 2,
 					'constraints' => array(
@@ -59,25 +59,28 @@
 							'min' => 1,
 							'minMessage' => "Co najmniej {{ limit }} "
 							))
-					#bo mo¿na te¿ sprzedawaæ rzeczy na wagê - st¹d u³amki w iloœci
+					#bo moÂ¿na teÂ¿ sprzedawaÃ¦ rzeczy na wagÃª - stÂ¹d uÂ³amki w iloÅ“ci
 				)))
 				->add('amount_min','number',array(
-					'label' => 'wiêcej sztuk ni¿',
+					'label' => 'wiÃªcej sztuk niÂ¿',
 					'required' => false,
 					'precision' => 2,
-					#brak constraints - zak³adam, ze je¿eli wpisze
-					#np. liczbe ujemn¹ to zawsze prawdziwe
+					#brak constraints - zakÂ³adam, ze jeÂ¿eli wpisze
+					#np. liczbe ujemnÂ¹ to zawsze prawdziwe
 				))
 				->add('expireAt_min','number',array(
-					'label' => 'data wa¿noœci d³u¿sza ni¿ (dni)',
+					'label' => 'data waÂ¿noÅ“ci dÂ³uÂ¿sza niÂ¿ (dni)',
 					'required' => false,
 				))
 				->add('expireAt_max','number',array(
-					'label' => 'data wa¿noœci krótsza ni¿ (dni)',
+					'label' => 'data waÂ¿noÅ“ci krÃ³tsza niÂ¿ (dni)',
 					'required' => false,
 				));
-			#error - jakby nie wchodzi³ do tego ifa
-			if($this->option == 1){#produkty dla ca³ej grupy
+			#error - jakby nie wchodziÂ³ do tego ifa
+            #fixme: SprawdÅº, jakÄ… wartoÅ›Ä‡ ma $this->option.
+            #       MoÅ¼liwe, Å¼e jest nullem, bo nic nie przyszÅ‚o z wyszukiwarki.
+            #       Warto teÅ¼ zobaczyÄ‡ jakÄ… ma wartoÅ›Ä‡ w searchProductsAction
+			if($this->option == 1){#produkty dla caÂ³ej grupy
 				$repo = $this->getDoctrine()->getManager()
 					->getRepository('WarehouseBundle:Store')
 				;
@@ -99,13 +102,13 @@
 					}
 				));
 			}
-			
-			
-			
+
+
+
 			#todo groups and stores
-			
+
 		}
-		
+
 		public function getName()
 		{
 			return 'search_products';
